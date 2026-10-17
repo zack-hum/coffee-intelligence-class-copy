@@ -1,5 +1,11 @@
 # Run log (newest first)
 
+## 2026-10-17 (2) — free FX + ICAFE price sources
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers or review comments from Z on #7–#13; CI green on #7 and #12. Nothing built (nothing approved). ruff + pytest green.
+- Research: free CRC/USD and ICAFE farmgate sources → `agent/research/2026-10-17-free-fx-and-icafe-price-sources.md`. Frankfurter v2 (keyless, official) for FX history; BCCR optional (free token); ICAFE has no feed → curated dated table. Commented on #9.
+- Proposals: none new (5 open, at cap). Questions: #14 build order before the Jan 4 trip (default: #13 → #8 → #10 → #9 → #11).
+- Next research: UX patterns for offline-first mobile data entry (backs #10 Field mode).
+
 ## 2026-10-17 — Costa Rica sourcing specifics
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers or review comments from Z on #7–#13; CI green on #12. Nothing built (nothing approved). ruff + pytest green on main.
 - Research: how CR coffee is bought, priced and moved (ICAFE rules, liquidación, micro-mills, exporters, colón, 2026/27 outlook, EUDR) → `agent/research/2026-10-17-costa-rica-sourcing-specifics.md`, incl. a visit question list for the trip.
