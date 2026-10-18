@@ -1,5 +1,11 @@
 # Run log (newest first)
 
+## 2026-10-18 — offline-first field entry UX
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #12. Nothing built (nothing approved). ruff + pytest green on main.
+- Research: offline-first mobile data entry → `agent/research/2026-10-18-offline-first-field-entry-ux.md`. iOS has no Background Sync → sync on open/online/visible; installed PWA is exempt from Safari's 7-day eviction and gets `persist()`; Kobo-style JSON export as backup; CVA affective 1–9 scale + score formula for the cupping form. Commented deltas on #10.
+- Proposals: none new (5 open, at cap). Questions: none new (#14 still covers build order).
+- Next research: Costa Rica exporter/micro-mill public directories (backs #8 and the roadmap CR directory item).
+
 ## 2026-10-17 (2) — free FX + ICAFE price sources
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers or review comments from Z on #7–#13; CI green on #7 and #12. Nothing built (nothing approved). ruff + pytest green.
 - Research: free CRC/USD and ICAFE farmgate sources → `agent/research/2026-10-17-free-fx-and-icafe-price-sources.md`. Frankfurter v2 (keyless, official) for FX history; BCCR optional (free token); ICAFE has no feed → curated dated table. Commented on #9.
