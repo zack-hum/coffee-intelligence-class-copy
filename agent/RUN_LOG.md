@@ -1,5 +1,11 @@
 # Run log (newest first)
 
+## 2026-10-18 (2) — Costa Rica supplier directories
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #7 and #12. Nothing built (nothing approved). ruff + pytest green on main.
+- Research: public CR exporter/micro-mill directories → `agent/research/2026-10-18-costa-rica-supplier-directories.md`. No free machine-readable registry (ICAFE's isn't published and blocks bots); best seeds are CoE results (ACE, structured, 2026 avg $45.53/lb, Los Santos swept) and PROCOMER's Buy from Costa Rica (contacts gated). Recommended a curated, source-linked seed list inside #8 instead of a separate directory; commented on #8.
+- Proposals: none new (5 open, at cap). Questions: none new (#14 still covers build order).
+- Next research: UX patterns from great data dashboards (price ladder: farmgate → FOB → CoE) for #9.
+
 ## 2026-10-18 — offline-first field entry UX
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #12. Nothing built (nothing approved). ruff + pytest green on main.
 - Research: offline-first mobile data entry → `agent/research/2026-10-18-offline-first-field-entry-ux.md`. iOS has no Background Sync → sync on open/online/visible; installed PWA is exempt from Safari's 7-day eviction and gets `persist()`; Kobo-style JSON export as backup; CVA affective 1–9 scale + score formula for the cupping form. Commented deltas on #10.
