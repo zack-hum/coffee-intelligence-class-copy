@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+- Sourcing CRM (#8): a Sourcing tab with organizations, people, a green-coffee deal pipeline (drag and drop between stages, won/lost), activities with a due-soon/overdue list, notes and samples, CSV export/import for every list, and an optional seed list of ~40 public Costa Rican suppliers. Also runs standalone with `./dev.sh crm` / `dev.bat crm`.
+
 ## [1.1.0] - 2026-10-12
 
 First public release.
