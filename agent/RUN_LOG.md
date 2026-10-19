@@ -1,5 +1,11 @@
 # Run log (newest first)
 
+## 2026-10-19 — price ladder UX (for #9)
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #12. Nothing built (nothing approved). ruff + pytest green on main.
+- Research: how to show farmgate → C → SCTG FOB → offer in one view → `agent/research/2026-10-19-price-ladder-ux.md`. Trade reporters headline FOB and keep one basis per axis; SCTG publishes p25/median/p75 → use an IQR band; bullet-graph-style single-row SVG ladder with a text verdict, off-scale CoE as an arrow. SCTG license still unverified (gating step for #9). Commented on #9.
+- Proposals: none new (5 open, at cap). Questions: none new (#14 still covers build order).
+- Next research: new free news/data sources (origin-level harvest and weather alerts) or competitor refresh.
+
 ## 2026-10-18 (2) — Costa Rica supplier directories
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #7 and #12. Nothing built (nothing approved). ruff + pytest green on main.
 - Research: public CR exporter/micro-mill directories → `agent/research/2026-10-18-costa-rica-supplier-directories.md`. No free machine-readable registry (ICAFE's isn't published and blocks bots); best seeds are CoE results (ACE, structured, 2026 avg $45.53/lb, Los Santos swept) and PROCOMER's Buy from Costa Rica (contacts gated). Recommended a curated, source-linked seed list inside #8 instead of a separate directory; commented on #8.
