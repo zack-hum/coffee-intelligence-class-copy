@@ -1,5 +1,12 @@
 # Run log (newest first)
 
+## 2026-10-20 (2) — build #10 Field mode slice 1 + global catalogue sources
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No reviews or comments from Z on #12/#17/#18/#7 (all CI green); #9 still waits on Z's "go" for the re-scope.
+- Built: #10 Field mode slice 1 → draft PR #19 (stacked on #17): installable `/field/` PWA, IndexedDB outbox + idempotent `POST /api/crm/sync`, `visits`/`cuppings` CRM kinds, CVA 2024 / classic 2004 / quick cupping forms (`app/crm/cupping.py`), offline add of farms and people, JSON backup. ruff + 25 pytest green; Playwright offline run at 375 px synced exactly once.
+- Research: free sources for a global producer catalogue → `agent/research/2026-10-20-global-producer-catalog-sources.md`. CoE public results (~17 origins) + Open Supply Hub (CC BY-SA, manual download) usable; RA/Fairtrade link-out only; ACE Farm Directory is members-only.
+- Proposals: #20 global supplier catalogue (after the trip). Commented on #8 and #10. Questions: none new.
+- Next build: #10 slice 2; then #9 once Z confirms the re-scope.
+
 ## 2026-10-20 — build #13 hosting + SCTG licensing
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. Z approved #8–#11, #13 and answered #14 ("build all in that order": #13 → #8 → #10 → #9 → #11); #8 is in draft PR #17 (CI green). No review comments on open PRs.
 - Built: #13 card-free hosting → PR #18 (`render.yaml`, Firestore indexes, `ingest.yml` cron + script, `GOOGLE_CREDENTIALS_JSON` loading, `docs/DEPLOY_FREE.md`). ruff + 18 pytest green, actionlint clean, demo-mode smoke test of every ingest path.
