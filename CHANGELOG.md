@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+- Free, card-free hosting: `render.yaml` (Render free plan), Firestore indexes for Firebase Spark, a scheduled GitHub Actions ingestion workflow, and a step-by-step guide in `docs/DEPLOY_FREE.md` (#13).
+- Firestore credentials can come from a `GOOGLE_CREDENTIALS_JSON` secret, so the cloud mode runs outside Google Cloud.
+
 ## [1.1.0] - 2026-10-12
 
 First public release.

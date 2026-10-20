@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "articles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "origins", "arrayConfig": "CONTAINS"},
+        {"fieldPath": "published", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "articles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "topics", "arrayConfig": "CONTAINS"},
+        {"fieldPath": "published", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "articles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "tokens", "arrayConfig": "CONTAINS"},
+        {"fieldPath": "published", "order": "DESCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -1,0 +1,60 @@
+# Scheduled ingestion for the free Render deployment (docs/DEPLOY_FREE.md).
+# Does nothing until the APP_URL and INGEST_TOKEN repository secrets exist.
+name: Ingest
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"   # news every 30 min
+    - cron: "20 11 * * *"    # all datasets daily (≈06:20 Central)
+    - cron: "50 */3 * * *"   # prices + weather every 3 h
+    - cron: "*/10 * * * *"   # wake ping: keeps the free instance from sleeping
+  workflow_dispatch:
+    inputs:
+      job:
+        description: What to run
+        type: choice
+        options: [news, data, fast, wake]
+        default: news
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ingest-${{ github.event.schedule || inputs.job }}
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+      - name: Pick endpoint
+        id: pick
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          JOB: ${{ inputs.job }}
+        run: |
+          case "$SCHEDULE" in
+            "7,37 * * * *")  job=news ;;
+            "20 11 * * *")   job=data ;;
+            "50 */3 * * *")  job=fast ;;
+            "*/10 * * * *")  job=wake ;;
+            *)               job="${JOB:-news}" ;;
+          esac
+          case "$job" in
+            news) path="/tasks/ingest/news" ;;
+            data) path="/tasks/ingest/data" ;;
+            fast) path="/tasks/ingest/data?only=closes,weather" ;;
+            wake) path="/healthz" ;;
+            *) echo "::error::unknown job $job"; exit 1 ;;
+          esac
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+      - name: Call the app
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          INGEST_TOKEN: ${{ secrets.INGEST_TOKEN }}
+          ENDPOINT: ${{ steps.pick.outputs.path }}
+        run: bash .github/scripts/ingest.sh "$ENDPOINT"

@@ -2,14 +2,19 @@
 
 Two backends with the same interface:
   * SQLiteStore   - local dev / tests / a single small VM (full-text search via FTS5)
-  * FirestoreStore - production on Cloud Run (free tier covers personal use)
+  * FirestoreStore - production (Cloud Run, or Render + Firebase Spark; free tier
+                     covers personal use)
 
 Choose with STORE=sqlite|firestore (default: sqlite locally, firestore when
-K_SERVICE is set, i.e. on Cloud Run).
+K_SERVICE is set, i.e. on Cloud Run). Off Google Cloud, Firestore credentials
+come from GOOGLE_CREDENTIALS_JSON or GOOGLE_APPLICATION_CREDENTIALS; see
+firestore_settings().
 """
 
 from __future__ import annotations
 
+import base64
+import binascii
 import json
 import os
 import re
@@ -226,10 +231,15 @@ class FirestoreStore(Store):
 
     SEEN_MAX = 8000  # ~160 KB of IDs, well under the 1 MiB document limit
 
-    def __init__(self, project: str | None = None, database: str = "(default)"):
+    def __init__(self, project: str | None = None, database: str = "(default)",
+                 credentials_info: dict | None = None):
         from google.cloud import firestore  # imported lazily so dev doesn't need it
         self.fs = firestore
-        self.db = firestore.Client(project=project, database=database)
+        credentials = None
+        if credentials_info:
+            from google.oauth2 import service_account
+            credentials = service_account.Credentials.from_service_account_info(credentials_info)
+        self.db = firestore.Client(project=project, database=database, credentials=credentials)
 
     def upsert_articles(self, items):
         items = list(items)
@@ -339,6 +349,42 @@ class FirestoreStore(Store):
 
 # ==================================================================== factory
 
+def firestore_settings(env=os.environ) -> dict:
+    """Project and credentials for FirestoreStore, from the environment.
+
+    On Cloud Run both come from the runtime. Elsewhere (e.g. Render + Firebase
+    Spark, see docs/DEPLOY_FREE.md) a service-account key is supplied as either
+      * GOOGLE_CREDENTIALS_JSON - the key's JSON (or base64 of it) in a secret
+        env var, or
+      * GOOGLE_APPLICATION_CREDENTIALS - path to the key file (read by google-auth).
+    GOOGLE_CLOUD_PROJECT wins; otherwise the project comes from the key.
+    """
+    info = None
+    raw = (env.get("GOOGLE_CREDENTIALS_JSON") or "").strip()
+    if raw:
+        if not raw.startswith("{"):
+            try:
+                raw = base64.b64decode(raw, validate=True).decode()
+            except (binascii.Error, UnicodeDecodeError):
+                raise ValueError("GOOGLE_CREDENTIALS_JSON is neither JSON nor base64 JSON") from None
+        try:
+            info = json.loads(raw)
+        except ValueError:
+            raise ValueError("GOOGLE_CREDENTIALS_JSON is not valid JSON") from None
+        if not isinstance(info, dict) or info.get("type") != "service_account":
+            raise ValueError("GOOGLE_CREDENTIALS_JSON must be a service-account key")
+    project = env.get("GOOGLE_CLOUD_PROJECT") or (info or {}).get("project_id")
+    key_path = env.get("GOOGLE_APPLICATION_CREDENTIALS")
+    if not project and key_path:
+        try:
+            with open(key_path, encoding="utf-8") as f:
+                project = json.load(f).get("project_id")
+        except (OSError, ValueError):
+            pass  # google-auth reports a bad key file with a clearer error
+    return {"project": project or None, "database": env.get("FIRESTORE_DB", "(default)"),
+            "credentials_info": info}
+
+
 _store: Store | None = None
 
 
@@ -347,8 +393,7 @@ def get_store() -> Store:
     if _store is None:
         kind = os.getenv("STORE") or ("firestore" if os.getenv("K_SERVICE") else "sqlite")
         if kind == "firestore":
-            _store = FirestoreStore(project=os.getenv("GOOGLE_CLOUD_PROJECT"),
-                                    database=os.getenv("FIRESTORE_DB", "(default)"))
+            _store = FirestoreStore(**firestore_settings())
         else:
             _store = SQLiteStore(os.getenv("SQLITE_PATH", "coffee.db"))
     return _store

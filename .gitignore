@@ -2,6 +2,10 @@
 .env
 .env.*
 !.env.example
+# Service-account keys (Firebase / Google Cloud) — never commit
+*-firebase-adminsdk-*.json
+service-account*.json
+*credentials*.json
 
 # Local archives (SQLite, created by demo/live mode)
 data/

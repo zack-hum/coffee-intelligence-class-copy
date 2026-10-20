@@ -69,6 +69,8 @@ Settings come from environment variables, falling back to `.env`. Command-line a
 | `ARABICA_SYMBOLS` | `KC=F` | Yahoo symbols to try for arabica, comma-separated |
 | `QUOTE_TTL` / `WEATHER_TTL` | `60` / `1800` | Cache lifetimes, in seconds |
 | `PORT` | `8080` | Local server port |
+| `GOOGLE_CREDENTIALS_JSON` | none | Cloud mode off Google Cloud (e.g. Render): the Firestore service-account key's JSON, as a secret. Not needed on Cloud Run |
+| `GOOGLE_CLOUD_PROJECT` / `FIRESTORE_DB` | from the key / `(default)` | Firestore project and database |
 
 Without keys, everything except US imports and USDA data works.
 
@@ -88,6 +90,9 @@ app/
   static/          Single-page frontend (vanilla JS, no build step)
 tests/             Offline tests (pytest)
 deploy.sh          One-command Google Cloud deployment
+render.yaml        Free Render deployment (Blueprint); guide in docs/DEPLOY_FREE.md
+firestore.indexes.json, firebase.json   Firestore indexes for the free (Spark) setup
+.github/workflows/ingest.yml   Scheduled ingestion for the free deployment
 ```
 
 The server reloads when you save a file under `app/`; refresh the browser to see the change. The Dev page has on-demand ingestion, a tagging playground that shows which keywords fired for any headline, and a feed tester for previewing an RSS feed before adding it to `app/config.py`.
@@ -116,9 +121,16 @@ The server reloads when you save a file under `app/`; refresh the browser to see
 
 Each story is checked for coffee relevance, then tagged with origins and Costa Rica regions (using local-language place names), one or more of 13 topics, and a **bullish/bearish signal** from supply and price keywords such as frost, drought, bumper crop and plunge. The signal is a heuristic for triage only. All keyword lists are in `app/tagging.py`.
 
+## Deploy for free (recommended)
+
+Card-free hosting: the app on **Render**'s free plan, the archive in **Firestore** on Firebase's free
+**Spark** plan, and ingestion triggered by a scheduled **GitHub Actions** workflow
+(`.github/workflows/ingest.yml`). Nothing on file can bill. Step-by-step guide (~20 minutes):
+[`docs/DEPLOY_FREE.md`](docs/DEPLOY_FREE.md).
+
 ## Deploy to Google Cloud
 
-Requirements: a Google Cloud project with billing enabled, and the `gcloud` CLI signed in.
+Use this when going live for real; it needs a billing account. Requirements: a Google Cloud project with billing enabled, and the `gcloud` CLI signed in.
 
 ```bash
 PROJECT_ID=your-project DASH_PASSWORD='choose-a-password' \

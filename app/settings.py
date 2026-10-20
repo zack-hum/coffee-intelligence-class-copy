@@ -8,8 +8,9 @@ APP_MODE decides how the whole app behaves:
   live   Real data from every free source, archived to a local SQLite file,
          with ingestion running inside the server (news every 15 min,
          datasets every 6 h). Use this to test feeds before deploying.
-  cloud  Production on Cloud Run: Firestore archive, ingestion triggered by
-         Cloud Scheduler, Dev tools off. Chosen automatically on Cloud Run.
+  cloud  Production: Firestore archive, ingestion triggered externally
+         (Cloud Scheduler on Cloud Run, GitHub Actions on Render - see
+         docs/DEPLOY_FREE.md), Dev tools off. Chosen automatically on Cloud Run.
 
 Values come from the real environment first, then a `.env` file in the
 project root (copy .env.example). No extra dependency needed.

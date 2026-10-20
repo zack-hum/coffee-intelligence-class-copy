@@ -1,0 +1,26 @@
+# Render Blueprint: free, card-free hosting (see docs/DEPLOY_FREE.md).
+# Render → New → Blueprint → pick this repo. Values marked `sync: false` are
+# asked for once when the Blueprint is created; nothing here can bill.
+services:
+  - type: web
+    name: coffee-monitor
+    runtime: docker
+    plan: free              # 0.1 CPU / 512 MB; sleeps after 15 min idle
+    region: oregon
+    healthCheckPath: /healthz
+    autoDeployTrigger: checksPass   # deploy main only after CI is green
+    envVars:
+      - key: APP_MODE
+        value: cloud        # Firestore archive, ingestion via GitHub Actions
+      - key: STORE
+        value: firestore
+      - key: DASH_PASSWORD
+        sync: false         # the login password (any username)
+      - key: GOOGLE_CREDENTIALS_JSON
+        sync: false         # Firebase service-account key (paste the whole JSON)
+      - key: INGEST_TOKEN
+        generateValue: true # copy it into the GitHub secret of the same name
+      - key: CENSUS_API_KEY
+        sync: false         # optional, free
+      - key: FAS_API_KEY
+        sync: false         # optional, free

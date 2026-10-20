@@ -26,7 +26,7 @@ log = logging.getLogger("coffee")
 app = FastAPI(title="Coffee Origin Monitor", docs_url=None, redoc_url=None)
 STATIC = Path(__file__).parent / "static"
 PASSWORD = os.getenv("DASH_PASSWORD")      # basic-auth gate for the UI/API (any username)
-INGEST_TOKEN = os.getenv("INGEST_TOKEN")   # shared secret for Cloud Scheduler → /tasks/*
+INGEST_TOKEN = os.getenv("INGEST_TOKEN")   # shared secret for the scheduler (Cloud Scheduler / GitHub Actions) → /tasks/*
 OPEN_PATHS = ("/healthz", "/tasks/")
 
 
