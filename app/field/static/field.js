@@ -218,13 +218,14 @@ async function pageHome(view) {
       <a class="btn big" href="#/org/new"><span>🏡</span>Add farm / org</a>
       <a class="btn big" href="#/person/new"><span>👤</span>Add person</a>
     </div>
+    <a class="btn block" href="#/people-orgs" style="margin-top:10px">🔎 Farms & people · search and edit</a>
     <h2>Recent visits</h2>
     <div class="card list">${visits.length ? visits.sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 15).map(v =>
       `<a class="item" href="#/visit/${v.id}"><span>${esc(orgName(v.org_id))}</span><span class="muted small">${esc(v.date || '')}${v._pending ? ' · ⏳' : ''}</span></a>`).join('')
       : '<span class="muted small">No visits yet.</span>'}</div>
     <h2>Cupping flights</h2>
     <div class="card list">${Object.keys(flights).length ? Object.entries(flights).sort((a, b) => (b[1][0].date || '').localeCompare(a[1][0].date || '')).slice(0, 15).map(([k, cs]) =>
-      `<a class="item" href="#/cup/${encodeURIComponent(k)}"><span>${esc(k)}</span><span class="muted small">${cs.length} sample${cs.length > 1 ? 's' : ''}${cs.some(c => c._pending) ? ' · ⏳' : ''}</span></a>`).join('')
+      `<a class="item" href="#/flight/${encodeURIComponent(k)}"><span>${esc(k)}</span><span class="muted small">${cs.length} sample${cs.length > 1 ? 's' : ''}${cs.some(c => c._pending) ? ' · ⏳' : ''}</span></a>`).join('')
       : '<span class="muted small">No cuppings yet.</span>'}</div>
     <h2>Backup</h2>
     <button class="btn block" id="dl">Download my field data (JSON)</button>
@@ -247,47 +248,108 @@ async function download() {
   document.body.appendChild(a); a.click(); a.remove();
 }
 
-async function pageOrg(view) {
-  view.innerHTML = `<h1>Add farm / organization</h1><form id="f" class="card">
-    ${inp('name', 'Name *', '', 'text', 'required')}
-    <label>Type</label><select name="type">${opt(ORG_TYPES, 'farm', null)}</select>
-    <label>Region</label><select name="region">${opt(REGIONS(), '')}</select>
-    ${inp('town', 'Town / location', '')}${inp('producer', 'Producer name', '')}
-    ${inp('phone', 'Phone', '', 'tel')}${inp('email', 'Email', '', 'email')}${inp('website', 'Website', '', 'url')}
-    ${inp('altitude_m', 'Altitude (m)', '')}${inp('varieties', 'Varieties', '')}${inp('processing', 'Processing', '')}
-    ${inp('exporter_of_record', 'Exporter of record', '')}${inp('dry_mill', 'Dry mill', '')}${inp('icafe_reg_no', 'ICAFE registration no.', '')}
-    <label>Notes</label><textarea name="notes"></textarea>
-    <div class="row" style="margin-top:14px"><button class="btn primary block">Save</button></div></form>`;
+// Farms & people on this phone: search, then tap to edit (seeded or added in the field).
+async function pageDirectory(view, params) {
+  const [orgs, people, visits, cups] = await Promise.all([all('orgs'), all('people'), all('visits'), all('cuppings')]);
+  let tab = params.get('tab') === 'people' ? 'people' : 'orgs', q = params.get('q') || '';
+  const counts = id => [visits, cups].map(xs => xs.filter(x => x.org_id === id).length);
+  const fold = t => String(t || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const orgName = id => (orgs.find(o => o.id === id) || {}).name || '';
+  view.innerHTML = `<h1>Farms & people</h1>
+    <div class="grid2 tabs"><button class="btn sm" data-tab="orgs">Farms / orgs (${orgs.length})</button><button class="btn sm" data-tab="people">People (${people.length})</button></div>
+    <input type="search" id="dq" placeholder="Search name, town, producer, role…" value="${esc(q)}" aria-label="Search">
+    <div class="card list" id="dlist"></div>
+    <div class="grid2"><a class="btn" href="#/org/new">+ Farm / org</a><a class="btn" href="#/person/new">+ Person</a></div>`;
+  const draw = () => {
+    $$('[data-tab]').forEach(b => b.classList.toggle('primary', b.dataset.tab === tab));
+    const terms = fold(q).split(/\s+/).filter(Boolean);
+    const hit = hay => terms.every(t => fold(hay).includes(t));
+    const rows = tab === 'orgs'
+      ? orgs.filter(o => hit([o.name, o.town, o.producer, o.region, o.type].join(' '))).sort(byName).map(o => {
+        const [nv, nc] = counts(o.id);
+        return `<a class="item" href="#/org/${o.id}"><span>${esc(o.name)}<br><span class="small muted">${esc([o.town, o.producer].filter(Boolean).join(' · '))}</span></span>
+          <span class="small muted">${[nv && `${nv} visit${nv > 1 ? 's' : ''}`, nc && `${nc} cupped`].filter(Boolean).join(' · ')}${o.verified ? ' ✓' : ''}${o._pending ? ' ⏳' : ''}</span></a>`; })
+      : people.filter(p => hit([p.name, p.title, p.location, orgName(p.org_id)].join(' '))).sort(byName).map(p =>
+        `<a class="item" href="#/person/${p.id}"><span>${esc(p.name)}<br><span class="small muted">${esc([p.title, orgName(p.org_id)].filter(Boolean).join(' · '))}</span></span>
+          <span class="small muted">${p._pending ? '⏳' : ''}</span></a>`);
+    $('#dlist').innerHTML = rows.slice(0, 200).join('') + (rows.length > 200 ? `<p class="small muted">${rows.length - 200} more — refine the search.</p>` : '')
+      || '<span class="muted small">No matches. Add it below — it syncs when you have signal.</span>';
+    history.replaceState(null, '', `#/people-orgs?tab=${tab}${q ? '&q=' + encodeURIComponent(q) : ''}`);
+  };
+  $$('[data-tab]').forEach(b => b.onclick = () => { tab = b.dataset.tab; draw(); });
+  $('#dq').oninput = e => { q = e.target.value; draw(); };
+  draw();
+}
+
+// Visits and cupped lots already logged for an org or person (shown under its edit form).
+async function historyFor(key, id) {
+  const [visits, cups] = await Promise.all([all('visits'), all('cuppings')]);
+  const vs = visits.filter(v => v[key] === id).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const cs = cups.filter(c => c[key] === id).sort((a, b) => (b.total ?? -1) - (a.total ?? -1));
+  if (!vs.length && !cs.length) return '';
+  return `<h2>Visits</h2><div class="card list">${vs.map(v => `<a class="item" href="#/visit/${v.id}"><span>${esc(v.date || '')}</span>
+      <span class="small muted">${esc(lbl('harvest_status', v.harvest_status) || '')}</span></a>`).join('') || '<span class="muted small">None yet.</span>'}</div>
+    <h2>Cupped lots</h2><div class="card list">${cs.map(c => `<a class="item" href="#/flight/${encodeURIComponent(c.session || c.date)}"><span>${esc(c.lot)}<br><span class="small muted">${esc(c.session || c.date || '')}</span></span>
+      <b>${c.total == null ? '—' : Number(c.total).toFixed(2)}</b></a>`).join('') || '<span class="muted small">None yet.</span>'}</div>`;
+}
+const lbl = (name, v) => (metaOpts(name).find(([k]) => k === v) || [])[1] || '';
+const nulls = d => { Object.keys(d).forEach(k => { if (d[k] === '') d[k] = null; }); return d; };
+
+async function pageOrg(view, id = 'new') {
+  const isNew = id === 'new', o = isNew ? {type: 'farm'} : await getDoc('orgs', id);
+  if (!o) { view.innerHTML = '<p class="pad muted">Organization not found on this phone. <a href="#/people-orgs">Farms & people</a></p>'; return; }
+  view.innerHTML = `<h1>${isNew ? 'Add farm / organization' : 'Edit ' + esc(o.name)}</h1>
+    ${!isNew && o.source && o.source !== 'Field mode' ? `<p class="small muted">From ${o.source_url ? `<a href="${esc(o.source_url)}" target="_blank" rel="noopener">${esc(o.source)}</a>` : esc(o.source)}. Your edits are kept with the record.</p>` : ''}
+    <form id="f" class="card">
+    ${inp('name', 'Name *', o.name, 'text', 'required')}
+    <label>Type</label><select name="type">${opt(ORG_TYPES, o.type, null)}</select>
+    <label>Region</label><select name="region">${opt(REGIONS(), o.region)}</select>
+    ${inp('town', 'Town / location', o.town)}${inp('producer', 'Producer name', o.producer)}
+    ${inp('phone', 'Phone', o.phone, 'tel')}${inp('email', 'Email', o.email, 'email')}${inp('website', 'Website', o.website, 'url')}
+    ${inp('altitude_m', 'Altitude (m)', o.altitude_m)}${inp('varieties', 'Varieties', o.varieties)}${inp('processing', 'Processing', o.processing)}
+    ${inp('exporter_of_record', 'Exporter of record', o.exporter_of_record)}${inp('dry_mill', 'Dry mill', o.dry_mill)}${inp('icafe_reg_no', 'ICAFE registration no.', o.icafe_reg_no)}
+    ${inp('price_per_fanega', 'Liquidación (₡/fanega)', o.price_per_fanega, 'number')}
+    <div class="check"><input type="checkbox" name="eudr_geo" id="eudr" ${o.eudr_geo ? 'checked' : ''}><label for="eudr" style="margin:2px 0">EUDR geolocation on file</label></div>
+    ${isNew ? '' : `<div class="check"><input type="checkbox" name="verified" id="ver" ${o.verified ? 'checked' : ''}><label for="ver" style="margin:2px 0">Verified in person</label></div>`}
+    <label>Notes</label><textarea name="notes">${esc(o.notes || '')}</textarea>
+    <div class="row" style="margin-top:14px"><button class="btn primary block">Save</button></div></form>
+    ${isNew ? '' : `<div class="grid2"><a class="btn" href="#/visit/new?org=${o.id}">📍 New visit</a><a class="btn" href="#/cup/new?org=${o.id}">☕ Cup a sample</a></div>
+      ${await historyFor('org_id', o.id)}`}`;
   $('#f').onsubmit = async e => {
     e.preventDefault();
-    const d = formData($('#f'));
-    Object.keys(d).forEach(k => { if (d[k] === '') d[k] = null; });
+    const d = nulls(formData($('#f')));
     if (d.icafe_reg_no) d.icafe_registered = 'yes';
-    await save('orgs', {...d, country: d.region && d.region !== 'other' ? 'Costa Rica' : null, verified: true, source: 'Field mode'});
-    toast('Saved'); location.hash = '#/';
+    if (d.region && d.region !== 'other' && !o.country) d.country = 'Costa Rica';
+    if (isNew) Object.assign(d, {verified: true, source: 'Field mode'});
+    const saved = await save('orgs', d, isNew ? null : id);
+    toast('Saved'); location.hash = isNew ? '#/' : '#/org/' + saved.id;
   };
 }
 
-async function pagePerson(view) {
-  view.innerHTML = `<h1>Add person</h1><form id="f" class="card"><div id="pick"></div>
-    ${inp('name', 'Name *', '', 'text', 'required')}${inp('title', 'Role (owner, mill manager…)', '')}${inp('phone', 'Phone', '', 'tel')}
-    ${inp('whatsapp', 'WhatsApp', '', 'tel')}${inp('email', 'Email', '', 'email')}${inp('location', 'Location', '')}${inp('languages', 'Languages', '')}
-    <label>Notes</label><textarea name="notes"></textarea>
-    <div class="row" style="margin-top:14px"><button class="btn primary block">Save</button></div></form>`;
-  await orgPicker($('#pick'));
+async function pagePerson(view, id = 'new') {
+  const isNew = id === 'new', p = isNew ? {} : await getDoc('people', id);
+  if (!p) { view.innerHTML = '<p class="pad muted">Person not found on this phone. <a href="#/people-orgs?tab=people">Farms & people</a></p>'; return; }
+  view.innerHTML = `<h1>${isNew ? 'Add person' : 'Edit ' + esc(p.name)}</h1><form id="f" class="card"><div id="pick"></div>
+    ${inp('name', 'Name *', p.name, 'text', 'required')}${inp('title', 'Role (owner, mill manager…)', p.title)}${inp('phone', 'Phone', p.phone, 'tel')}
+    ${inp('whatsapp', 'WhatsApp', p.whatsapp, 'tel')}${inp('email', 'Email', p.email, 'email')}${inp('location', 'Location', p.location)}${inp('languages', 'Languages', p.languages)}
+    <label>Notes</label><textarea name="notes">${esc(p.notes || '')}</textarea>
+    <div class="row" style="margin-top:14px"><button class="btn primary block">Save</button></div></form>
+    ${isNew ? '' : `${p.whatsapp ? `<a class="btn block" href="https://wa.me/${esc(String(p.whatsapp).replace(/\D/g, ''))}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
+      ${await historyFor('person_id', p.id)}`}`;
+  await orgPicker($('#pick'), {orgId: p.org_id});
   $('[name=person_id]').closest('.pick').previousElementSibling.remove();
   $('[name=person_id]').closest('.pick').remove();
   $('#f').onsubmit = async e => {
     e.preventDefault();
-    const d = formData($('#f'));
-    Object.keys(d).forEach(k => { if (d[k] === '') d[k] = null; });
-    await save('people', d);
-    toast('Saved'); location.hash = '#/';
+    const d = nulls(formData($('#f')));
+    if (d.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) { toast('Check the email address'); return; }
+    const saved = await save('people', d, isNew ? null : id);
+    toast('Saved'); location.hash = isNew ? '#/' : '#/person/' + saved.id;
   };
 }
 
-async function pageVisit(view, id) {
-  const v = id === 'new' ? {date: today(), price_unit: 'usd_lb', checklist: {}} : await getDoc('visits', id);
+async function pageVisit(view, id, params = new URLSearchParams()) {
+  const v = id === 'new' ? {date: today(), price_unit: 'usd_lb', checklist: {}, org_id: params.get('org')} : await getDoc('visits', id);
   if (!v) { view.innerHTML = '<p class="pad muted">Visit not found on this phone.</p>'; return; }
   const ck = v.checklist || {};
   view.innerHTML = `<h1>${id === 'new' ? 'New visit' : 'Visit'}</h1><form id="f">
@@ -396,7 +458,7 @@ async function pageCup(view, key, params) {
   const visit = params.get('visit') ? await getDoc('visits', params.get('visit')) : null;
   const samples = await all('samples');
   let formId = existing[0]?.form || (await kvGet('lastForm')) || 'cva';
-  let cards = existing.length ? existing : [{id: uid(), org_id: visit?.org_id, person_id: visit?.person_id}];
+  let cards = existing.length ? existing : [{id: uid(), org_id: visit?.org_id || params.get('org'), person_id: visit?.person_id}];
   const session = existing[0]?.session || key !== 'new' && key || `Flight ${nowLabel()}`;
   const date = existing[0]?.date || visit?.date || today();
   const visitId = existing[0]?.visit_id || visit?.id || null;
@@ -449,9 +511,54 @@ async function pageCup(view, key, params) {
     }
     for (const old of existing) if (!cards.some(c => c.id === old.id)) await removeDoc('cuppings', old.id);
     toast(`Saved ${cards.length} sample${cards.length > 1 ? 's' : ''}`);
-    location.hash = '#/cup/' + encodeURIComponent(sess);
+    location.hash = '#/flight/' + encodeURIComponent(sess);
   };
   await draw();
+}
+
+// Flight comparison: samples ranked by score, then every attribute side by side with the
+// best value in each row marked (in text, not colour alone), then the bean data.
+async function pageFlight(view, key) {
+  const [cupsAll, orgs] = await Promise.all([all('cuppings'), all('orgs')]);
+  const cups = cupsAll.filter(c => (c.session || c.date) === key);
+  if (!cups.length) { view.innerHTML = '<p class="pad muted">Flight not found on this phone. <a href="#/">Home</a></p>'; return; }
+  const orgName = id => (orgs.find(o => o.id === id) || {}).name || '';
+  const ranked = cups.slice().sort((a, b) => (b.total ?? -1) - (a.total ?? -1) || String(a.lot).localeCompare(String(b.lot)));
+  const scored = ranked.filter(c => c.total != null);
+  const top = scored[0]?.total, low = scored[scored.length - 1]?.total;
+  const forms = [...new Set(ranked.map(c => c.form || 'cva'))];
+  const F = id => META.cupping_forms[id] || {attrs: [], cup_attrs: [], counts: []};
+  const rows = [];
+  for (const fid of forms) {
+    const f = F(fid);
+    for (const a of [...f.attrs, ...f.cup_attrs]) rows.push({label: a.label, form: fid, get: c => c.form === fid ? c.scores?.[a.key] : null, best: 'max'});
+    for (const a of f.counts) rows.push({label: a.label, form: fid, get: c => c.form === fid ? c.scores?.[a.key] : null, best: 'min'});
+  }
+  const bean = [['Process', c => (PROCESSES.find(([k]) => k === c.process) || [])[1] || c.process], ['Variety', c => c.variety], ['Altitude (m)', c => c.altitude_m],
+    ['Moisture (%)', c => c.moisture_pct], ['aw', c => c.water_activity], ['Density (g/L)', c => c.density_g_l], ['Screen', c => c.screen_size], ['Roast', c => c.roast_level]]
+    .filter(([, g]) => ranked.some(c => g(c) != null && g(c) !== ''));
+  const head = `<tr><th></th>${ranked.map((c, i) => `<th title="${esc(c.lot)}">#${i + 1}<br><span class="small">${esc(String(c.lot).slice(0, 14))}</span></th>`).join('')}</tr>`;
+  const scoreRow = r => {
+    const vals = ranked.map(r.get), nums = vals.filter(v => v != null && v !== '').map(Number);
+    const best = nums.length > 1 && new Set(nums).size > 1 ? (r.best === 'min' ? Math.min(...nums) : Math.max(...nums)) : null;
+    return `<tr><th>${esc(r.label)}${forms.length > 1 ? ` <span class="small muted">${esc(r.form)}</span>` : ''}</th>${vals.map(v => v == null || v === '' ? '<td class="muted">–</td>'
+      : `<td${Number(v) === best ? ' class="best" title="best in flight"' : ''}>${esc(v)}${Number(v) === best ? '<span class="sr"> (best)</span>' : ''}</td>`).join('')}</tr>`;
+  };
+  view.innerHTML = `<h1>${esc(key)}</h1>
+    <p class="small muted">${esc(ranked[0].date || '')} · ${ranked.length} sample${ranked.length > 1 ? 's' : ''} · ${forms.map(f => esc(F(f).label || f)).join(', ')}
+      ${scored.length > 1 ? ` · spread ${(top - low).toFixed(2)} pts` : ''}</p>
+    <div class="row"><a class="btn sm" href="#/cup/${encodeURIComponent(key)}">✎ Edit flight</a><a class="btn sm" href="#/">Home</a></div>
+    <h2>Ranking</h2>
+    <div class="card">${ranked.map((c, i) => `<div class="rank">
+      <span class="rk">${c.total == null ? '–' : i + 1}</span>
+      <div class="rbody"><div class="row"><b>${esc(c.lot)}</b><span class="spacer"></span><b class="rscore">${c.total == null ? 'not scored' : Number(c.total).toFixed(2)}</b></div>
+        ${c.total != null ? `<div class="sbar" aria-hidden="true"><i style="width:${Math.max(4, Math.min(100, (c.total - 60) / 40 * 100))}%"></i></div>` : ''}
+        <div class="small muted">${esc([orgName(c.org_id), c.descriptors].filter(Boolean).join(' · '))}</div></div></div>`).join('')}
+      <p class="small muted">Bars run from 60 to 100 points.</p></div>
+    ${rows.length ? `<h2>Attributes</h2><div class="cmp"><table>${head}${rows.map(scoreRow).join('')}
+      <tr class="tot"><th>Score</th>${ranked.map(c => `<td>${c.total == null ? '–' : Number(c.total).toFixed(2)}</td>`).join('')}</tr></table></div>
+      <p class="small muted">▲ marks the best value in each row (highest score, fewest defective cups).</p>` : ''}
+    ${bean.length ? `<h2>Bean</h2><div class="cmp"><table>${head}${bean.map(([l, g]) => `<tr><th>${esc(l)}</th>${ranked.map(c => `<td>${esc(g(c) ?? '–')}</td>`).join('')}</tr>`).join('')}</table></div>` : ''}`;
 }
 
 // ------------------------------------------------------------------ router
@@ -464,10 +571,12 @@ async function route() {
   try {
     if (!parts.length) await pageHome(view);
     else if (!META) view.innerHTML = '<p class="pad">Open Field once with signal so it can download your organizations and the cupping forms. After that it works offline. <a href="#/">Home</a></p>';
-    else if (parts[0] === 'visit') await pageVisit(view, parts[1] || 'new');
+    else if (parts[0] === 'visit') await pageVisit(view, parts[1] || 'new', params);
+    else if (parts[0] === 'flight') await pageFlight(view, parts.slice(1).join('/'));
+    else if (parts[0] === 'people-orgs') await pageDirectory(view, params);
     else if (parts[0] === 'cup') await pageCup(view, parts.slice(1).join('/') || 'new', params);
-    else if (parts[0] === 'org') await pageOrg(view);
-    else if (parts[0] === 'person') await pagePerson(view);
+    else if (parts[0] === 'org') await pageOrg(view, parts[1] || 'new');
+    else if (parts[0] === 'person') await pagePerson(view, parts[1] || 'new');
     else view.innerHTML = '<p class="pad muted">Not found. <a href="#/">Home</a></p>';
   } catch (e) {
     view.innerHTML = `<p class="pad err">Something went wrong: ${esc(e.message)}</p>`;

@@ -1,7 +1,7 @@
 /* Field mode service worker: keeps the app shell on the phone so it opens with no signal.
    Data never goes through this cache — the page keeps records in IndexedDB and talks to
    /api/crm itself. Bump VERSION whenever a shell file changes. */
-const VERSION = 'field-v1';
+const VERSION = 'field-v2';
 const SHELL = ['/field/', '/field/static/field.js', '/field/static/field.css', '/field/manifest.webmanifest',
   '/field/static/icon-180.png', '/field/static/icon-192.png', '/field/static/icon-512.png'];
 

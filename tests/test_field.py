@@ -162,6 +162,52 @@ def test_csv_export_includes_field_kinds(client):
     assert "L1" in row and "94.75" in row  # 0.65625 x (8 x 8) + 52.75
 
 
+def test_editing_a_seeded_org_in_field_keeps_its_source_and_coe(client, st):
+    from app.crm import service
+    service.seed(st)
+    o = next(x for x in st.all("orgs") if x.get("coe"))
+    # Field's edit form sends every field it shows (blank ones as null) as one upsert.
+    form = {"name": o["name"] + " (Don Mayo)", "type": o["type"], "region": o["region"], "town": "San Marcos",
+            "producer": None, "phone": "+506 2222 0000", "email": None, "website": None, "altitude_m": "1700",
+            "varieties": None, "processing": None, "exporter_of_record": "Exporter A", "dry_mill": None,
+            "icafe_reg_no": "R-123", "icafe_registered": "yes", "price_per_fanega": 115754, "eudr_geo": True,
+            "verified": True, "notes": "met at the mill"}
+    res = sync(client, up("orgs", o["id"], **form))
+    assert res["failed"] == 0
+    e = st.get("orgs", o["id"])
+    assert e["source"] == o["source"] and e["source_url"] == o["source_url"]
+    assert e["coe"] == o["coe"] and e["seed_key"] == o["seed_key"]
+    assert e["verified"] is True and e["eudr_geo"] is True and e["price_per_fanega"] == 115754
+    assert e["town"] == "San Marcos" and e["icafe_reg_no"] == "R-123"
+    assert service.seed(st)["added"] == 0  # edited seed record isn't re-added
+
+
+def test_visits_and_cuppings_filter_by_org_and_person_for_crm_timeline(client):
+    sync(client, up("orgs", "forg-010", name="Finca A"), up("orgs", "forg-011", name="Finca B"),
+         up("people", "fper-010", name="Ana", org_id="forg-010"),
+         up("visits", "fvis-010", org_id="forg-010", person_id="fper-010", date="2027-01-06"),
+         up("visits", "fvis-011", org_id="forg-011", date="2027-01-07"),
+         up("cuppings", "fcup-010", lot="A1", session="F1", date="2027-01-06", form="quick", total=86, org_id="forg-010"),
+         up("cuppings", "fcup-011", lot="B1", session="F1", date="2027-01-06", form="quick", total=84,
+            org_id="forg-011", person_id="fper-010"))
+    ids = lambda path: sorted(d["id"] for d in client.get("/api/crm/" + path).json())  # noqa: E731
+    assert ids("visits?org_id=forg-010") == ["fvis-010"]
+    assert ids("cuppings?org_id=forg-010") == ["fcup-010"]
+    assert ids("visits?person_id=fper-010") == ["fvis-010"]
+    assert ids("cuppings?person_id=fper-010") == ["fcup-011"]
+    assert ids("cuppings?session=F1") == ["fcup-010", "fcup-011"]
+    # visits have no deal link, so a deal filter is ignored; the CRM deal page doesn't ask for them
+    assert len(ids("visits?deal_id=whatever")) == 2
+
+
+def test_field_app_has_slice_2_screens(client):
+    js = client.get("/field/static/field.js").text
+    for route in ("'people-orgs'", "'flight'", "pageFlight", "pageDirectory", "historyFor"):
+        assert route in js, route
+    crm_js = client.get("/crm/static/crm.js").text
+    assert "cuppingPanel" in crm_js and "/field/#/visit/" in crm_js
+
+
 # ------------------------------------------------------------------ installable shell
 
 def test_field_shell_manifest_and_service_worker(client):

@@ -283,8 +283,11 @@ function wireComposer(ctx) {
 
 async function timeline(filter) {
   const qs = new URLSearchParams(filter).toString();
-  const [acts, notes, samples] = await Promise.all([api('/activities?' + qs), api('/notes?' + qs),
-    filter.person_id ? Promise.resolve([]) : api('/samples?' + qs)]);
+  // Visits and cuppings come from Field mode (#10); they link to orgs and people, not deals.
+  const field = !filter.deal_id;
+  const [acts, notes, samples, visits, cups] = await Promise.all([api('/activities?' + qs), api('/notes?' + qs),
+    filter.person_id ? Promise.resolve([]) : api('/samples?' + qs),
+    field ? api('/visits?' + qs) : Promise.resolve([]), field ? api('/cuppings?' + qs) : Promise.resolve([])]);
   const todo = acts.filter(a => !a.done);
   const hist = [
     ...acts.filter(a => a.done).map(a => ({t: a.updated, html: `<div class="crm-ev"><span class="crm-evi">${ACT_ICON[a.type] || '•'}</span><div><div><s class="faint">${esc(a.subject)}</s> <span class="faint tiny">${esc(lbl('activity_types', a.type))}${a.due ? ' · ' + nice(a.due) : ''}</span>
@@ -294,6 +297,14 @@ async function timeline(filter) {
     ...samples.map(s => ({t: s.created, html: `<div class="crm-ev"><span class="crm-evi">☕</span><div><div>Sample <b>${esc(s.lot)}</b>
         <select class="crm-inline" data-sample="${s.id}">${opts('sample_status').map(o => `<option value="${o.value}" ${o.value === s.status ? 'selected' : ''}>${o.label}</option>`).join('')}</select>
         <button class="crm-link" data-edits="${s.id}">edit</button></div><div class="faint tiny">${[s.process, s.variety, s.requested && 'requested ' + nice(s.requested), s.received && 'received ' + nice(s.received)].filter(Boolean).map(esc).join(' · ')}</div></div></div>`})),
+    ...visits.map(v => ({t: dayT(v.date, v.created), html: `<div class="crm-ev"><span class="crm-evi">📍</span><div><div>Visit <b>${nice(v.date)}</b>${v.person_name && !filter.person_id ? ' with ' + esc(v.person_name) : ''}${v.org_name && !filter.org_id ? ' · ' + esc(v.org_name) : ''}
+        <a class="crm-link" href="/field/#/visit/${v.id}">open in Field</a></div>
+        <div class="faint tiny">${[lbl('harvest_status', v.harvest_status), v.varieties, v.price_discussed != null && `${fmt(v.price_discussed)} ${lbl('price_units', v.price_unit)}`,
+          v.altitude_m != null && `${fmt(v.altitude_m, 0)} m`, checklistDone(v.checklist)].filter(Boolean).map(esc).join(' · ')}</div>
+        ${v.notes ? `<div class="small muted crm-pre">${esc(v.notes)}</div>` : ''}</div></div>`})),
+    ...cups.map(c => ({t: dayT(c.date, c.created), html: `<div class="crm-ev"><span class="crm-evi">☕</span><div><div>Cupped <b>${esc(c.lot)}</b>
+        <span class="mono">${c.total == null ? 'not scored' : fmt(c.total)}</span> <a class="crm-link" href="/field/#/flight/${encodeURIComponent(c.session || c.date)}">flight</a></div>
+        <div class="faint tiny">${[nice(c.date), c.session, c.process, c.variety, c.descriptors].filter(Boolean).map(esc).join(' · ')}</div></div></div>`})),
   ].sort((a, b) => b.t - a.t);
   return `<h2>Focus <span class="faint small mono">${todo.length}</span></h2>
     <div class="panel tight">${todo.map(a => `<div class="crm-ev"><input type="checkbox" data-done="${a.id}" title="Mark done"><div>
@@ -301,6 +312,23 @@ async function timeline(filter) {
       <button class="crm-link" data-edita="${a.id}">edit</button></div>${a.notes ? `<div class="small muted crm-pre">${esc(a.notes)}</div>` : ''}</div></div>`).join('') || '<div class="faint small">No upcoming activities. Schedule the next step so nothing slips.</div>'}</div>
     <h2>History</h2><div class="panel tight">${hist.map(h => h.html).join('') || '<div class="faint small">Nothing logged yet.</div>'}</div>`;
 }
+// Field records carry a calendar date; sort them at noon that day (created time breaks ties).
+const dayT = (d, created) => d ? Date.parse(d + 'T12:00:00') / 1000 + (created || 0) % 1 : created || 0;
+const checklistDone = ck => { const xs = Object.values(ck || {}); const n = xs.filter(x => x && (x.done || x.note)).length; return xs.length ? `${n}/${xs.length} questions asked` : ''; };
+
+// Cupping summary for an org: best and average score, and every lot cupped (Field mode).
+function cuppingPanel(cups) {
+  if (!cups.length) return '';
+  const sc = cups.filter(c => c.total != null).sort((a, b) => b.total - a.total);
+  const avg = sc.length ? sc.reduce((t, c) => t + c.total, 0) / sc.length : null;
+  return `<div class="panel tight crm-side"><div class="row"><h3 style="margin:0">Cuppings <span class="faint mono small">${cups.length}</span></h3><span class="spacer"></span>
+    <a class="crm-link" href="/field/#/cup/new">+ Cup in Field</a></div>
+    ${sc.length ? `<div class="small" style="margin:4px 0">Best <b class="mono">${fmt(sc[0].total)}</b> · average <span class="mono">${fmt(avg)}</span></div>` : ''}
+    <div class="crm-scroll"><table class="t"><tr><th>Lot</th><th>Score</th><th>Date</th></tr>
+    ${[...sc, ...cups.filter(c => c.total == null)].map(c => `<tr><td class="small"><a href="/field/#/flight/${encodeURIComponent(c.session || c.date)}">${esc(c.lot)}</a></td>
+      <td class="mono">${c.total == null ? '—' : fmt(c.total)}</td><td class="mono tiny">${esc(c.date || '')}</td></tr>`).join('')}</table></div></div>`;
+}
+
 function wireTimeline(root) {
   wireDone(root);
   $$('[data-undo]', root).forEach(b => b.onclick = async () => { await patch('activities', b.dataset.undo, {done: false}); rerender(); });
@@ -324,19 +352,20 @@ function wireAdds(root) {
 // ================================================================== ORG DETAIL
 async function pageOrg(body, id) {
   const o = await api('/orgs/' + id);
-  const [people, deals] = await Promise.all([api('/people?org_id=' + id), api('/deals?org_id=' + id)]);
+  const [people, deals, cups] = await Promise.all([api('/people?org_id=' + id), api('/deals?org_id=' + id), api('/cuppings?org_id=' + id)]);
   const coe = (o.coe || []).slice().sort((a, b) => b.year - a.year || (a.rank || 99) - (b.rank || 99));
   body.innerHTML = `<div class="crm-crumb"><a href="${ROOT}/orgs">← Organizations</a></div>
     <div class="crm-head"><div><h2 class="crm-title">${esc(o.name)}</h2>
       <div class="row">${typeChip(o.type)}${regionChip(o.region)}${o.town ? `<span class="faint small">${esc(o.town)}</span>` : ''}${verifiedBadge(o)}
       ${o.source_url ? `<a class="small" href="${esc(o.source_url)}" target="_blank" rel="noopener">source: ${esc(o.source || 'link')} ↗</a>` : ''}</div></div>
-      <div class="row"><button class="btn" id="verify">${o.verified ? 'Mark unverified' : '✓ Mark verified'}</button><button class="btn" data-edit>Edit</button><button class="btn danger" id="del">Delete</button></div></div>
+      <div class="row"><a class="btn" href="/field/#/visit/new?org=${id}">📍 Log visit</a><button class="btn" id="verify">${o.verified ? 'Mark unverified' : '✓ Mark verified'}</button><button class="btn" data-edit>Edit</button><button class="btn danger" id="del">Delete</button></div></div>
     <div class="crm-detail">
       <aside>
         ${miniList('People', 'people', people, p => `<div class="crm-li"><a href="${ROOT}/person/${p.id}">${esc(p.name)}</a> <span class="faint small">${esc(p.title || '')}</span>
           <div class="tiny">${p.email ? `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a> ` : ''}${p.phone ? `<a href="tel:${esc(p.phone)}">${esc(p.phone)}</a> ` : ''}${p.whatsapp ? `<a href="https://wa.me/${esc(p.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</div></div>`, {org_id: id})}
         ${miniList('Deals', 'deals', deals, d => `<div class="crm-li"><a href="${ROOT}/deal/${d.id}">${esc(d.title)}</a> <span class="mono small">${money(d.value_usd)}</span>
           <div class="tiny faint">${esc(lbl('stages', d.stage))} · ${d.status}</div></div>`, {org_id: id})}
+        ${cuppingPanel(cups)}
         ${coe.length ? `<div class="panel tight crm-side"><h3>Cup of Excellence</h3><div class="crm-scroll"><table class="t"><tr><th>Year</th><th>#</th><th>Score</th><th>$/lb</th><th>Lot</th></tr>
           ${coe.map(c => `<tr><td class="mono">${c.year}</td><td class="mono">${c.rank ?? ''}</td><td class="mono">${fmt(c.score)}</td><td class="mono">${c.price_usd_lb != null ? fmt(c.price_usd_lb) : '—'}</td>
           <td class="small">${esc([c.process, c.variety].filter(Boolean).join(' · '))} ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">↗</a>` : ''}</td></tr>`).join('')}</table></div>
