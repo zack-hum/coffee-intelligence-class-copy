@@ -6,6 +6,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 - Sourcing CRM (#8): a Sourcing tab with organizations, people, a green-coffee deal pipeline (drag and drop between stages, won/lost), activities with a due-soon/overdue list, notes and samples, CSV export/import for every list, and an optional seed list of ~40 public Costa Rican suppliers. Also runs standalone with `./dev.sh crm` / `dev.bat crm`.
+- Field mode, first slice (#10): an installable phone app at `/field/` that works with no signal. Log farm visits (GPS, altitude, harvest status, price discussed, the six-question Costa Rica visit checklist), add farms and people on the spot, and cup flights of samples on three layouts (SCA CVA 2024 affective, SCA classic 2004, quick score) with bean details and descriptors. Everything saves on the phone and syncs once when signal returns; a JSON backup download works offline.
 
 ## [1.1.0] - 2026-10-12
 

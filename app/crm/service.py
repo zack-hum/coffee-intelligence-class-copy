@@ -15,12 +15,14 @@ import uuid
 from datetime import date, timedelta
 from pathlib import Path
 
-from . import schema
+from . import cupping, schema
 from .store import CRMStore
 
 SEED_FILE = Path(__file__).parent / "seed_cr.json"
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+# Client-generated ids (Field mode creates records offline): short, URL-safe.
+ID_RE = re.compile(r"^[A-Za-z0-9_-]{6,64}$")
 
 
 class Invalid(ValueError):
@@ -85,6 +87,15 @@ def validate(st: CRMStore, kind: str, data: dict, existing: dict | None = None) 
             raise Invalid(f"{f[1]} is required")
         if f[2] == "ref" and doc[k] and not st.get(f[3]["target"], doc[k]):
             raise Invalid(f"{f[1]}: no such record")
+    if kind == "cuppings":
+        sc = doc.get("scores")
+        if doc["form"] != "quick" and not sc:
+            doc["total"] = None  # scores not entered yet
+        else:
+            try:
+                doc["total"] = cupping.score(doc["form"], sc if isinstance(sc, dict) else None, doc.get("total"))
+            except cupping.ScoreError as e:
+                raise Invalid(f"Scores: {e}") from None
     now = time.time()
     doc["id"] = doc.get("id") or data.get("id") or uuid.uuid4().hex[:12]
     doc["created"] = doc.get("created") or now
@@ -182,24 +193,66 @@ def due_soon(st: CRMStore, days: int = 7, today: date | None = None) -> dict:
     return {"today": t, "overdue": [a for a in acts if a["overdue"]], "upcoming": [a for a in acts if not a["overdue"]]}
 
 
+REF_KEY = {"orgs": "org_id", "people": "person_id", "deals": "deal_id", "samples": "sample_id", "visits": "visit_id"}
+# Deleting an organization deletes what only makes sense under it; anything else is unlinked.
+ORG_CASCADE = ("deals", "samples", "activities", "notes", "visits", "cuppings")
+
+
 def delete(st: CRMStore, kind: str, id_: str) -> dict:
-    """Delete a record. Orgs cascade to their deals, samples, activities and notes;
-    people and deals are unlinked from their activities/notes rather than deleted."""
+    """Delete a record. Orgs cascade to their deals, samples, activities, notes, visits and
+    cuppings; people, deals, samples and visits are unlinked from the records that point at them."""
     if not st.get(kind, id_):
         return {"deleted": 0}
     n = int(st.delete(kind, id_))
-    key = {"orgs": "org_id", "people": "person_id", "deals": "deal_id"}.get(kind)
+    key = REF_KEY.get(kind)
     if not key:
         return {"deleted": n}
-    for k in ("deals", "samples", "activities", "notes", "people"):
+    for k in schema.KINDS:
+        if key not in schema.spec(k):
+            continue
         for d in st.all(k):
             if d.get(key) != id_:
                 continue
-            if kind == "orgs" and k in ("deals", "samples", "activities", "notes"):
+            if kind == "orgs" and k in ORG_CASCADE:
                 n += delete(st, k, d["id"])["deleted"]
             else:
                 st.put(k, {**d, key: None, "updated": time.time()})
     return {"deleted": n}
+
+
+# ----------------------------------------------------------------------- sync
+
+def sync(st: CRMStore, ops: list[dict]) -> list[dict]:
+    """Apply a batch of offline writes in order (Field mode outbox).
+
+    Each op is {"op": "upsert"|"delete", "kind", "id", "data"}. Ids are generated on the
+    phone, so replaying the same batch after a dropped connection never duplicates records:
+    an upsert of an existing id is a PATCH, a delete of a missing id is a no-op. Later ops may
+    reference records created by earlier ones. Each op succeeds or fails on its own; a failed
+    op is reported with its error so the phone can show it instead of retrying forever."""
+    out = []
+    for op in ops:
+        kind, id_, action = op.get("kind"), str(op.get("id") or ""), op.get("op", "upsert")
+        res = {"kind": kind, "id": id_, "op": action}
+        try:
+            if kind not in schema.FIELDS:
+                raise Invalid(f"unknown kind {kind!r}")
+            if not ID_RE.match(id_):
+                raise Invalid("id must be 6-64 letters, digits, '-' or '_'")
+            if action == "delete":
+                res.update(ok=True, deleted=delete(st, kind, id_)["deleted"])
+            elif action == "upsert":
+                data = {k: v for k, v in (op.get("data") or {}).items() if k not in schema.SYSTEM}
+                existing = st.get(kind, id_)
+                doc = validate(st, kind, data if existing else {**data, "id": id_}, existing)
+                st.put(kind, doc)
+                res.update(ok=True, doc=doc)
+            else:
+                raise Invalid(f"unknown op {action!r}")
+        except Invalid as e:
+            res.update(ok=False, error=str(e))
+        out.append(res)
+    return out
 
 
 # ------------------------------------------------------------------------ CSV

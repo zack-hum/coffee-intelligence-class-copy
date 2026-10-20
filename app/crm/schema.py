@@ -12,6 +12,7 @@ Field spec: (key, label, type, extra)
 from __future__ import annotations
 
 from .. import config
+from . import cupping
 
 ORG_TYPES = [
     ("farm", "Farm / producer"), ("micro_mill", "Micro-mill"), ("coop", "Cooperative"),
@@ -34,6 +35,11 @@ INCOTERMS = [("FOB", "FOB"), ("FCA", "FCA"), ("EXW", "EXW / farm gate"), ("FOT",
              ("CIF", "CIF"), ("DAP", "DAP"), ("DDP", "DDP")]
 ACTIVITY_TYPES = [("call", "Call"), ("whatsapp", "WhatsApp"), ("email", "Email"), ("visit", "Visit"),
                   ("meeting", "Meeting"), ("task", "Task"), ("deadline", "Deadline")]
+HARVEST_STATUS = [("pre", "Pre-harvest"), ("early", "Early picking"), ("peak", "Peak harvest"),
+                  ("late", "Late picking"), ("done", "Harvest finished")]
+PRICE_UNITS = [("usd_lb", "USD/lb"), ("usd_kg", "USD/kg"), ("crc_fanega", "₡/fanega"),
+               ("crc_kg", "₡/kg"), ("crc_quintal", "₡/quintal (46 kg)")]
+CUPPING_FORMS = [(k, f["label"]) for k, f in cupping.FORMS.items()]
 SAMPLE_STATUS = [("requested", "Requested"), ("received", "Received"), ("cupped", "Cupped"),
                  ("approved", "Approved"), ("rejected", "Rejected")]
 
@@ -128,6 +134,47 @@ FIELDS: dict[str, list[tuple]] = {
         ("received", "Received on", "date", {}),
         ("notes", "Notes", "textarea", {}),
     ],
+    # Field mode (#10): farm visits and cupped samples, captured offline on the phone.
+    "visits": [
+        ("org_id", "Organization", "ref", {**REQ, "target": "orgs"}),
+        ("person_id", "Met with", "ref", {"target": "people"}),
+        ("date", "Date", "date", REQ),
+        ("lat", "Latitude", "number", {}),
+        ("lon", "Longitude", "number", {}),
+        ("gps_accuracy_m", "GPS accuracy (m)", "number", {}),
+        ("altitude_m", "Altitude (m)", "number", {}),
+        ("varieties", "Varieties seen", "text", {}),
+        ("process", "Process", "select", {"options": PROCESSES}),
+        ("harvest_status", "Harvest status", "select", {"options": HARVEST_STATUS}),
+        ("price_discussed", "Price discussed", "number", {}),
+        ("price_unit", "Price unit", "select", {"options": PRICE_UNITS, "default": "usd_lb"}),
+        ("checklist", "Visit checklist", "json", {"hidden": True}),
+        ("notes", "Notes", "textarea", {}),
+    ],
+    # One record per bean cupped; `session` groups a flight.
+    "cuppings": [
+        ("lot", "Sample / lot name", "text", REQ),
+        ("session", "Flight / session", "text", {}),
+        ("date", "Date", "date", REQ),
+        ("form", "Cupping form", "select", {"options": CUPPING_FORMS, "default": cupping.DEFAULT_FORM}),
+        ("org_id", "Organization", "ref", {"target": "orgs"}),
+        ("person_id", "Producer / farmer", "ref", {"target": "people"}),
+        ("sample_id", "CRM sample", "ref", {"target": "samples"}),
+        ("visit_id", "Visit", "ref", {"target": "visits"}),
+        ("variety", "Variety", "text", {"group": "Bean"}),
+        ("process", "Process", "select", {"options": PROCESSES, "group": "Bean"}),
+        ("altitude_m", "Altitude (m)", "number", {"group": "Bean"}),
+        ("harvest", "Harvest", "text", {"group": "Bean"}),
+        ("moisture_pct", "Moisture (%)", "number", {"group": "Bean"}),
+        ("water_activity", "Water activity (aw)", "number", {"group": "Bean"}),
+        ("density_g_l", "Density (g/L)", "number", {"group": "Bean"}),
+        ("screen_size", "Screen size", "text", {"group": "Bean"}),
+        ("roast_level", "Roast level", "text", {"group": "Bean"}),
+        ("scores", "Scores", "json", {"hidden": True}),
+        ("total", "Score", "number", {}),
+        ("descriptors", "Descriptors", "text", {}),
+        ("notes", "Notes", "textarea", {}),
+    ],
 }
 KINDS = list(FIELDS)
 SYSTEM = ["id", "created", "updated"]
@@ -139,6 +186,8 @@ SEARCH = {
     "activities": ["subject", "notes"],
     "notes": ["body"],
     "samples": ["lot", "variety", "notes"],
+    "visits": ["varieties", "notes"],
+    "cuppings": ["lot", "session", "variety", "descriptors", "notes"],
 }
 LB_PER_KG = 2.2046226218
 
@@ -161,5 +210,7 @@ def meta() -> dict:
                   for k, fs in FIELDS.items()},
         "stages": opt(STAGES), "org_types": opt(ORG_TYPES), "regions": opt(REGIONS),
         "activity_types": opt(ACTIVITY_TYPES), "sample_status": opt(SAMPLE_STATUS),
+        "harvest_status": opt(HARVEST_STATUS), "price_units": opt(PRICE_UNITS),
+        "cupping_forms": cupping.meta(),
         "lb_per_kg": LB_PER_KG,
     }

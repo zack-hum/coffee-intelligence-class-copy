@@ -18,6 +18,7 @@ Dedicated Costa Rica tab because of my upcoming personal trip ;)
 - **Costa Rica:** all 8 ICAFE regions with harvest calendars, weather, 16-day rain forecasts, regional news, a trip planner and a price calculator (USD/lb, ₡/kg, ₡ per quintal).
 - **Data:** CFTC speculator positioning, IMF monthly arabica and robusta prices, ENSO (El Niño/La Niña), US Census imports by origin, and USDA supply and demand (optional key).
 - **Sourcing CRM:** a Pipedrive-style workspace for green-coffee sourcing: organizations (farms, micro-mills, co-ops, exporters…), people, a deal pipeline from *Prospect* through samples and cupping to *Arrived*, activities with a due-soon list, notes and sample tracking. Costa Rica fields (exporter of record, dry mill, ICAFE registration, EUDR geolocation, liquidación). Optional seed list of ~40 public Costa Rican suppliers (Cup of Excellence 2024–26 winners, major co-ops and exporters), each source-linked and marked unverified. CSV export and import for every list. Also runs on its own (`./dev.sh crm`).
+- **Field mode (offline phone app):** open `/field/` on your phone and add it to the home screen. Log farm visits and cupping flights (SCA CVA 2024, SCA classic 2004 or a quick score), and add farms and people, with no signal; changes sync to the Sourcing CRM exactly once when you're back online. Includes a JSON backup download.
 - **Source health:** a Sources page showing the last run, item count and error for every feed and dataset.
 
 ## Quick start
@@ -87,7 +88,10 @@ app/
   dev.py           Dev page API (local only)
   crm/             Sourcing CRM module: schema.py (all fields), store.py (SQLite/Firestore),
                    service.py (validation, CSV, seed), router.py (/api/crm), standalone.py,
-                   seed_cr.json (public Costa Rica suppliers), static/ (crm.js, crm.css)
+                   seed_cr.json (public Costa Rica suppliers), static/ (crm.js, crm.css),
+                   cupping.py (cupping forms + score math)
+  field/           Field mode (/field/): installable offline phone app — router.py, static/
+                   (field.js with IndexedDB outbox, sw.js service worker, manifest, icons)
   ingest/          News and dataset ingestion jobs
   demo/            Offline fixtures and the demo headline generator
   static/          Single-page frontend (vanilla JS, no build step)

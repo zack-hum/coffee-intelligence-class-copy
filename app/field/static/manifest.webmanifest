@@ -1,0 +1,15 @@
+{
+  "name": "Coffee Field Log",
+  "short_name": "Field",
+  "description": "Offline farm visits, contacts and cuppings for green-coffee sourcing.",
+  "id": "/field/",
+  "start_url": "/field/",
+  "scope": "/field/",
+  "display": "standalone",
+  "background_color": "#f6f1ea",
+  "theme_color": "#3b2418",
+  "icons": [
+    {"src": "/field/static/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/field/static/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

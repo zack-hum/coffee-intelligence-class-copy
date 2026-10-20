@@ -14,6 +14,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from .. import settings  # noqa: F401  (loads .env and APP_MODE defaults first)
+from ..field.router import router as field_router
 from ..main import basic_auth
 from .router import router
 
@@ -21,6 +22,8 @@ HERE = Path(__file__).parent
 app = FastAPI(title="Coffee Sourcing CRM", docs_url=None, redoc_url=None)
 app.middleware("http")(basic_auth)
 app.include_router(router)
+app.include_router(field_router)
+app.mount("/field/static", StaticFiles(directory=HERE.parent / "field" / "static"), name="field-static")
 app.mount("/crm/static", StaticFiles(directory=HERE / "static"), name="crm-static")
 app.mount("/static", StaticFiles(directory=HERE.parent / "static"), name="static")
 

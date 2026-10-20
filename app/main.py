@@ -18,6 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from . import config, settings, sources
 from .crm.router import router as crm_router
 from .demo import live as demo
+from .field.router import router as field_router
 from .ingest.data import JOBS as DATA_JOBS
 from .ingest.data import run_data
 from .ingest.news import run_news
@@ -322,6 +323,8 @@ if settings.DEV_TOOLS:
     app.include_router(dev_router)
 
 app.include_router(crm_router)
+app.include_router(field_router)
+app.mount("/field/static", StaticFiles(directory=Path(__file__).parent / "field" / "static"), name="field-static")
 app.mount("/crm/static", StaticFiles(directory=Path(__file__).parent / "crm" / "static"), name="crm-static")
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 

@@ -46,6 +46,16 @@ def seed():
     return service.seed(crm())
 
 
+@router.post("/sync")
+def sync(body: dict):
+    """Field mode outbox: apply offline writes in order; idempotent by client-generated id."""
+    ops = body.get("ops")
+    if not isinstance(ops, list) or len(ops) > 500:
+        raise HTTPException(422, "ops must be a list of at most 500 operations")
+    results = service.sync(crm(), ops)
+    return {"results": results, "ok": sum(r["ok"] for r in results), "failed": sum(not r["ok"] for r in results)}
+
+
 @router.get("/export/{kind}.csv")
 def export_csv(kind: str):
     _kind(kind)
