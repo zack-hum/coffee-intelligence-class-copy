@@ -209,6 +209,7 @@ async function pageHome(view) {
     ${standalone ? '' : `<div class="card note"><b>Install for offline use</b><p class="small muted">iPhone: tap <b>Share</b> → <b>Add to Home Screen</b>, then open Field from the home screen. Installed, your data isn't cleared by Safari.</p></div>`}
     <div class="card"><div class="row"><b>${ready ? '<span class="ok">Available offline ✓</span>' : '<span class="warn">Open once with signal to use offline</span>'}</b><span class="spacer"></span>
       <span class="small muted" id="persist"></span></div>
+      <p class="small warn" id="persistwhy" hidden>Not installed yet: Safari may clear data it thinks is unused after about a week. Add Field to the home screen before the trip and sync before each farm visit.</p>
       <div class="small muted">${orgs.length} organizations on this phone · last synced ${last ? new Date(last).toLocaleString() : 'never'}</div></div>
     ${errs.length ? `<div class="card note"><b class="bad">${errs.length} change${errs.length > 1 ? 's' : ''} the server refused</b><p class="small">${errs.map(e => esc(`${e.kind}: ${e.error}`)).join('<br>')}</p>
       <button class="btn sm" id="clearerr">Discard them</button></div>` : ''}
@@ -236,7 +237,11 @@ async function pageHome(view) {
     await tx('outbox', 'readwrite', s => Promise.all(errs.map(e => done(s.delete(e.seq)))));
     route();
   });
-  if (navigator.storage?.persisted) navigator.storage.persisted().then(p => { const el = $('#persist'); if (el) el.textContent = p ? 'storage: kept' : 'storage: may be cleared'; });
+  if (navigator.storage?.persisted) navigator.storage.persisted().then(p => {
+    const el = $('#persist');
+    if (el) el.innerHTML = p ? 'storage: kept ✓' : 'storage: may be cleared <span title="The phone can delete website data it thinks is unused. Installed to the home screen, Field asks to keep it; iPhone grants that automatically for installed apps.">ⓘ</span>';
+    if (!p && !standalone) $('#persistwhy')?.removeAttribute('hidden');
+  });
 }
 
 async function download() {
