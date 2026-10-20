@@ -1,5 +1,13 @@
 # Run log (newest first)
 
+## 2026-10-20 — build #13 hosting + SCTG licensing
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. Z approved #8–#11, #13 and answered #14 ("build all in that order": #13 → #8 → #10 → #9 → #11); #8 is in draft PR #17 (CI green). No review comments on open PRs.
+- Built: #13 card-free hosting → PR #18 (`render.yaml`, Firestore indexes, `ingest.yml` cron + script, `GOOGLE_CREDENTIALS_JSON` loading, `docs/DEPLOY_FREE.md`). ruff + 18 pytest green, actionlint clean, demo-mode smoke test of every ingest path.
+- Research: SCTG licensing → `agent/research/2026-10-20-sctg-licensing.md`. No open license and no redistribution grant (registration gate + antitrust "principles of use", © Goizueta); 2025 edition "soon". Recommended re-scoping #9 (own CRM deals + ICAFE + CoE + C; SCTG only as Z's private input) and asking Emory for permission; commented on #9.
+- Roadmap: "Now" = Z's approved build order. Closed question #14.
+- Proposals: none new (all open ones approved). Questions: none new.
+- Next build: #10 Field mode once #18/#17 are reviewed (it builds on #8's supplier records).
+
 ## 2026-10-19 — price ladder UX (for #9)
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No `approved` labels, no answers (#14 open) or review comments from Z on #7–#14; CI green on #12. Nothing built (nothing approved). ruff + pytest green on main.
 - Research: how to show farmgate → C → SCTG FOB → offer in one view → `agent/research/2026-10-19-price-ladder-ux.md`. Trade reporters headline FOB and keep one basis per axis; SCTG publishes p25/median/p75 → use an IQR band; bullet-graph-style single-row SVG ladder with a text verdict, off-scale CoE as an arrow. SCTG license still unverified (gating step for #9). Commented on #9.
