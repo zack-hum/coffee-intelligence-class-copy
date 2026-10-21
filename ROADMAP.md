@@ -6,17 +6,18 @@ Z can reorder, delete or add items in a PR or by commenting on any issue.
 
 ## Now (top = next) — build order Z approved on #14 (2026-10-19)
 
-- [ ] #13 Card-free hosting (Render + Firestore Spark + Actions cron) — PR #18, awaiting review.
-- [ ] #8 Sourcing CRM v1 — draft PR #17, awaiting review.
-- [ ] #10 Field mode — both slices in PR #19 (stacked on #17), ready for review; real-iPhone check needs Z.
+- [ ] #13 Card-free hosting (Render + Firestore Spark + Actions cron) — PR #18, main merged in 2026-10-21, awaiting review.
+- [ ] #10 Field mode — PR #19, retargeted to `main` after #17 merged; ready for review; real-iPhone check needs Z.
 - [ ] #21 Harvest phase by region (early/peak/tail) + Z's Field observations — proposed 2026-10-21, size S,
       recommended before #9 (`agent/research/2026-10-21-costa-rica-harvest-during-trip.md`).
 - [ ] #9 Offer check — re-scoped: SCTG has no reuse license (`agent/research/2026-10-20-sctg-licensing.md`);
       waiting on Z's re-approval of the revised scope.
-- [ ] #11 STRATEGY.md first draft (docs only).
+- [ ] #11 STRATEGY.md first draft — PR #22, for Z to edit and merge.
 
 ## Next
 
+- [ ] Path to public beta — proposal to open once #10 merges, as promised on #18: per-source licence flag + `PUBLIC_MODE`,
+      GDELT for news, accounts, paid-hosting budget, PWA/store plan (`agent/research/2026-10-21-public-data-licensing.md`).
 - [ ] #20 Global supplier catalogue (CoE results + Open Supply Hub CC BY-SA + Trase if licensed) — proposed,
       build after the trip (`agent/research/2026-10-20-global-producer-catalog-sources.md`).
 - [ ] Costa Rica trip mode: turn the trip planner into a practical field guide — per-region
@@ -40,4 +41,5 @@ Z can reorder, delete or add items in a PR or by commenting on any issue.
 
 ## Done
 
+- #8 Sourcing CRM v1 — PR #17, merged 2026-10-21.
 - v1.1.0 (2026-10-12) — see CHANGELOG.

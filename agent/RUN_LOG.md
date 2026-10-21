@@ -1,5 +1,13 @@
 # Run log (newest first)
 
+## 2026-10-21 (2) — STRATEGY.md draft + public data licensing
+- Orient: Z merged #7, #12, #17 (closes #8) and the Dependabot PRs; asked on #18 how scalable this is (answered there, promising a "path to public beta" proposal after #8/#10). No reviews on #18/#19; #9 still waits on Z's "go" for the re-scope.
+- Review/upkeep: merged `main` into #19 and retargeted it to `main` (its base #17 had merged); merged `main` into #18, resolved the CHANGELOG conflict and fixed its route test for included routers (FastAPI 0.143). ruff + pytest green on both; demo smoke OK on #18.
+- Built: #11 → PR #22 `docs/STRATEGY.md` first draft (vision, positioning, segments, JTBD table, 7 quality bars, moat, bets, constraints, metrics), every claim linked to research.
+- Research: which sources a public product may use → `agent/research/2026-10-21-public-data-licensing.md`. Yahoo/ICE and Google News aren't public-safe; CFTC, IMF (non-commercial, cite) and GDELT (open, cite) are; ICO is link-out only; World Bank licence unverified.
+- Proposals: none new (path-to-public-beta waits for #10 to merge, as promised). Questions: none new.
+- Next build: #21 or #9 once Z approves/confirms; otherwise review follow-ups.
+
 ## 2026-10-21 — build #10 Field mode slice 2 + CR harvest during the trip
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No new comments or reviews from Z since 2026-10-19; CI green on #7/#12/#17/#18/#19; #9 still waits on Z's "go" for the re-scope.
 - Built: #10 slice 2 → pushed to PR #19 (now ready for review, stacked on #17): Field "Farms & people" search + offline edit of any org/person (seed source/CoE kept), per-org/person visit + cupped-lot history, flight comparison view (ranking, attribute and bean tables, best per row), CRM org/person history shows visits + cuppings, org cupping panel, storage-persistence hint. ruff + 28 pytest green; Playwright offline run at 375 px synced once, CRM page checked at 1280 px.
