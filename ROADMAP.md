@@ -7,8 +7,9 @@ Each item: one line, small enough to ship in one run; link research notes where 
 
 - [ ] #13 Card-free hosting (Render + Firestore Spark + Actions cron) — PR #18, awaiting review.
 - [ ] #8 Sourcing CRM v1 — draft PR #17, awaiting review.
-- [ ] #10 Field mode — slice 1 in draft PR #19 (stacked on #17); slice 2 next: visits/cuppings on the org page,
-      edit farms/people in Field, flight comparison, real-iPhone check.
+- [ ] #10 Field mode — both slices in PR #19 (stacked on #17), ready for review; real-iPhone check needs Z.
+- [ ] #21 Harvest phase by region (early/peak/tail) + Z's Field observations — proposed 2026-10-21, size S,
+      recommended before #9 (`agent/research/2026-10-21-costa-rica-harvest-during-trip.md`).
 - [ ] #9 Offer check — re-scoped: SCTG has no reuse license (`agent/research/2026-10-20-sctg-licensing.md`);
       waiting on Z's re-approval of the revised scope.
 - [ ] #11 STRATEGY.md first draft (docs only).

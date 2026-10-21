@@ -1,5 +1,12 @@
 # Run log (newest first)
 
+## 2026-10-21 — build #10 Field mode slice 2 + CR harvest during the trip
+- Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No new comments or reviews from Z since 2026-10-19; CI green on #7/#12/#17/#18/#19; #9 still waits on Z's "go" for the re-scope.
+- Built: #10 slice 2 → pushed to PR #19 (now ready for review, stacked on #17): Field "Farms & people" search + offline edit of any org/person (seed source/CoE kept), per-org/person visit + cupped-lot history, flight comparison view (ranking, attribute and bean tables, best per row), CRM org/person history shows visits + cuppings, org cupping panel, storage-persistence hint. ruff + 28 pytest green; Playwright offline run at 375 px synced once, CRM page checked at 1280 px.
+- Research: CR harvest phase by region for Jan 4–17 + 2026/27 outlook → `agent/research/2026-10-21-costa-rica-harvest-during-trip.md`. Los Santos at peak, Brunca in its tail; dry Aug–Oct → uneven ripening; our calendar is month-binary and unsourced.
+- Proposals: #21 harvest phase by region + Field observations (S). Questions: none new.
+- Next build: #21 or #9 once approved/confirmed; #11 STRATEGY.md draft otherwise.
+
 ## 2026-10-20 (2) — build #10 Field mode slice 1 + global catalogue sources
 - Orient: PR #7 still unmerged → followed its CLAUDE.md/DEVELOPMENT.md. No reviews or comments from Z on #12/#17/#18/#7 (all CI green); #9 still waits on Z's "go" for the re-scope.
 - Built: #10 Field mode slice 1 → draft PR #19 (stacked on #17): installable `/field/` PWA, IndexedDB outbox + idempotent `POST /api/crm/sync`, `visits`/`cuppings` CRM kinds, CVA 2024 / classic 2004 / quick cupping forms (`app/crm/cupping.py`), offline add of farms and people, JSON backup. ruff + 25 pytest green; Playwright offline run at 375 px synced exactly once.
