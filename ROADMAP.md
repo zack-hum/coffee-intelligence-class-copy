@@ -1,7 +1,8 @@
 # Roadmap
 
-Maintained by the agent (see `CLAUDE.md`). Z can edit freely — reorder, delete, or add items.
-Each item: one line, small enough to ship in one run; link research notes where relevant.
+Priority order for ideas. An item here is **not** approved work: the agent turns items into
+`proposal` issues, and only issues Z labels `approved` get built (see `docs/DEVELOPMENT.md`).
+Z can reorder, delete or add items in a PR or by commenting on any issue.
 
 ## Now (top = next) — build order Z approved on #14 (2026-10-19)
 
