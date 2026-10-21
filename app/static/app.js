@@ -618,7 +618,7 @@ async function route() {
   timers.forEach(clearInterval); timers = [];
   const [path, qs] = (location.hash.slice(1) || '/').split('?');
   const params = new URLSearchParams(qs || '');
-  $$('#nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + (path.startsWith('/origin/') ? '/origins' : path)));
+  $$('#nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + (path.startsWith('/origin/') ? '/origins' : path.startsWith('/sourcing') ? '/sourcing' : path)));
   const view = $('#view');
   try {
     if (!META) { META = await api('/api/meta'); $('#devlink').hidden = !META.dev_tools; if (SNAP) renderStatus(SNAP); }
@@ -627,6 +627,7 @@ async function route() {
     else if (path === '/news') await pageNews(view, params);
     else if (path === '/origins') await pageOrigins(view);
     else if (path.startsWith('/origin/')) await pageOrigin(view, path.split('/')[2]);
+    else if (path.startsWith('/sourcing') && window.CRM) await window.CRM.page(view, path, params);
     else if (path === '/data') await pageData(view);
     else if (path === '/sources') await pageSources(view);
     else if (path === '/dev' && META.dev_tools) await pageDev(view);

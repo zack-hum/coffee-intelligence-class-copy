@@ -5,6 +5,9 @@ All notable changes to this project are documented here. The format follows [Kee
 ## [Unreleased]
 
 ### Added
+- Development process (`docs/DEVELOPMENT.md`): proposal → approval → pull request flow, versioning and rollback guide.
+- Agent operating files: `CLAUDE.md`, `ROADMAP.md`, `agent/` (research notes, competitor tracker, run log).
+- Sourcing CRM (#8): a Sourcing tab with organizations, people, a green-coffee deal pipeline (drag and drop between stages, won/lost), activities with a due-soon/overdue list, notes and samples, CSV export/import for every list, and an optional seed list of ~40 public Costa Rican suppliers. Also runs standalone with `./dev.sh crm` / `dev.bat crm`.
 - Free, card-free hosting: `render.yaml` (Render free plan), Firestore indexes for Firebase Spark, a scheduled GitHub Actions ingestion workflow, and a step-by-step guide in `docs/DEPLOY_FREE.md` (#13).
 - Firestore credentials can come from a `GOOGLE_CREDENTIALS_JSON` secret, so the cloud mode runs outside Google Cloud.
 

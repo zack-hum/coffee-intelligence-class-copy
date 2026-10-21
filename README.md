@@ -17,6 +17,7 @@ Dedicated Costa Rica tab because of my upcoming personal trip ;)
 - **Origins:** 18 origin pages with the implied local price from your own differential, exchange rate, current and forecast weather, a year of rainfall, US import volumes and prices, and origin news.
 - **Costa Rica:** all 8 ICAFE regions with harvest calendars, weather, 16-day rain forecasts, regional news, a trip planner and a price calculator (USD/lb, ₡/kg, ₡ per quintal).
 - **Data:** CFTC speculator positioning, IMF monthly arabica and robusta prices, ENSO (El Niño/La Niña), US Census imports by origin, and USDA supply and demand (optional key).
+- **Sourcing CRM:** a Pipedrive-style workspace for green-coffee sourcing: organizations (farms, micro-mills, co-ops, exporters…), people, a deal pipeline from *Prospect* through samples and cupping to *Arrived*, activities with a due-soon list, notes and sample tracking. Costa Rica fields (exporter of record, dry mill, ICAFE registration, EUDR geolocation, liquidación). Optional seed list of ~40 public Costa Rican suppliers (Cup of Excellence 2024–26 winners, major co-ops and exporters), each source-linked and marked unverified. CSV export and import for every list. Also runs on its own (`./dev.sh crm`).
 - **Source health:** a Sources page showing the last run, item count and error for every feed and dataset.
 
 ## Quick start
@@ -33,6 +34,7 @@ cd coffee-intelligence-v1.1
 | Demo mode: offline, synthetic data | `dev.bat` | `./dev.sh` |
 | Live mode: real sources | `dev.bat live` | `./dev.sh live` |
 | Run tests | `dev.bat test` | `./dev.sh test` |
+| Sourcing CRM on its own (port 8081) | `dev.bat crm` | `./dev.sh crm` |
 | Delete local archives | `dev.bat reset` | `./dev.sh reset` |
 | Production container (needs Docker) | | `./dev.sh docker` |
 
@@ -85,6 +87,9 @@ app/
   store.py         Archive storage: SQLite (local) and Firestore (cloud)
   settings.py      Run modes and .env loading
   dev.py           Dev page API (local only)
+  crm/             Sourcing CRM module: schema.py (all fields), store.py (SQLite/Firestore),
+                   service.py (validation, CSV, seed), router.py (/api/crm), standalone.py,
+                   seed_cr.json (public Costa Rica suppliers), static/ (crm.js, crm.css)
   ingest/          News and dataset ingestion jobs
   demo/            Offline fixtures and the demo headline generator
   static/          Single-page frontend (vanilla JS, no build step)
@@ -110,10 +115,13 @@ The server reloads when you save a file under `app/`; refresh the browser to see
 | US green coffee imports by origin (HS 090111) | US Census international trade API | Monthly | Yes |
 | Production, exports, stocks by country | USDA FAS PSD API | Monthly | Yes |
 | News | Publisher RSS, Google News RSS, GDELT DOC 2.0 | Every 15 min | No |
+| CRM seed list: Costa Rica suppliers | Alliance for Coffee Excellence (Cup of Excellence 2024–26 results), PROCOMER *Buy from Costa Rica*, public co-op/exporter pages | Static file, curated by hand | No |
 
 **Publisher RSS:** Daily Coffee News, Sprudge, Barista Magazine, Coffee Review, Tea & Coffee Trade Journal, Fresh Cup.
 
 **Google News:** global market, crop, policy, logistics and industry topics; a local-language and an English query for each origin; and Costa Rica queries. Outlets that block automated feed access (Perfect Daily Grind, Comunicaffe, European Coffee Trip, The Tico Times, Global Coffee Report, World Coffee Portal, Barchart and others) are reached through Google News `site:` queries instead.
+
+**CRM seed list:** ACE allows its farm information to be used to help sell the winning coffees; we store a curated list (farm, published producer name, region, score, price, process, variety) for personal sourcing research, never cupping-note text, and link every lot back to ACE. No personal contact details are included; contacts are only what you enter yourself.
 
 **Please respect the sources.** Data belongs to its providers and their terms apply to your use of it, not this project's MIT license. Yahoo Finance and Google News RSS are unofficial endpoints with no service guarantee, so use them for personal research, not redistribution. Only headlines and short excerpts (up to 280 characters) are stored, and every item links back to the publisher. Keep request rates modest; the defaults follow GDELT's guidance of one request per 5 seconds.
 
@@ -160,7 +168,7 @@ Ideas under consideration: landed-cost calculator, producer and cupping log, ori
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests and the rules for adding data sources, and the [Code of Conduct](CODE_OF_CONDUCT.md). Report security issues privately as described in [SECURITY.md](SECURITY.md).
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests and the rules for adding data sources, and the [Code of Conduct](CODE_OF_CONDUCT.md). Report security issues privately as described in [SECURITY.md](SECURITY.md). How changes are proposed, approved, versioned and rolled back is in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## License
 

@@ -1,0 +1,1216 @@
+[
+ {
+  "name": "Río Blanco",
+  "type": "farm",
+  "producer": "Alejandra Cordero Solano",
+  "region": "tarrazu",
+  "town": "Copey de Dota",
+  "altitude_m": "1950",
+  "website": null,
+  "processing": "Honey, Washed",
+  "varieties": "Catuai, Geisha, Java",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/1-rio-blanco-costa-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 1,
+    "score": 91.36,
+    "process": "Washed",
+    "variety": "Java",
+    "price_usd_lb": 200.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-rio-blanco-costa-rica-2026-wet/"
+   },
+   {
+    "year": 2026,
+    "rank": 3,
+    "score": 90.61,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 48.6,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-rio-blanco-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 5,
+    "score": 88.69,
+    "process": "Washed",
+    "variety": "Catuai",
+    "price_usd_lb": 16.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-rio-blanco-costa-rica-2024-wet/"
+   }
+  ],
+  "notes": "Family firm Café Solís & Cordero runs it; 2026 washed Java set $200.10/lb CoE CR record (Tico Times)."
+ },
+ {
+  "name": "Las Nubes",
+  "type": "farm",
+  "producer": "Alex Ureña Marín",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Natural",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/1-las-nubes-costa-rica-2026-dry/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 1,
+    "score": 91.06,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 95.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-las-nubes-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2025,
+    "rank": 7,
+    "score": 88.63,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 25.11,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/7-las-nubes-costa-rica-2025-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 14,
+    "score": 88.35,
+    "process": "Natural",
+    "variety": "Geisha",
+    "price_usd_lb": 16.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/14-las-nubes-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "2024 lot listed under Roberto Mata Naranjo."
+ },
+ {
+  "name": "Las Margaritas Veintiséis",
+  "type": "farm",
+  "producer": "Emmanuel Solis Porras",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/1-las-margaritas-veintiseis-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 1,
+    "score": 91.06,
+    "process": "Experimental",
+    "variety": "Geisha",
+    "price_usd_lb": 110.5,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-las-margaritas-veintiseis-costa-rica-2026-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "El Roble",
+  "type": "farm",
+  "producer": "Victor Hugo Romero Madrigal",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-el-roble-costa-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 2,
+    "score": 91.32,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 80.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-el-roble-costa-rica-2026-wet/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Don Cayito",
+  "type": "farm",
+  "producer": "Luis Ricardo Calderón Madrigal",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Washed",
+  "varieties": "Geisha, Typica",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-don-cayito-costa-rica-2026-dry/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 2,
+    "score": 90.89,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 52.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-don-cayito-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2025,
+    "rank": 3,
+    "score": 89.53,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 26.5,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-don-cayito-costa-rica-2025-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 1,
+    "score": 93.62,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 82.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-don-cayito-costa-rica-2024-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 6,
+    "score": 88.62,
+    "process": "Washed",
+    "variety": "Typica",
+    "price_usd_lb": 18.6,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/6-don-cayito-costa-rica-2024-wet/"
+   }
+  ],
+  "notes": "2024 washed lot listed under María Lourdes Castillo Umaña."
+ },
+ {
+  "name": "El Entronque",
+  "type": "farm",
+  "producer": "Luis Felipe Monge Gamboa",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-el-entronque-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 2,
+    "score": 90.72,
+    "process": "Experimental",
+    "variety": "Geisha",
+    "price_usd_lb": 44.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-el-entronque-costa-rica-2026-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "El Cedro – Hacienda San Isidro Labrador",
+  "type": "farm",
+  "producer": "Johel Monge Naranjo",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/3-el-cedro-hacienda-san-isidro-labrador-costa-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 3,
+    "score": 90.67,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 60.5,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-el-cedro-hacienda-san-isidro-labrador-costa-rica-2026-wet/"
+   },
+   {
+    "year": 2025,
+    "rank": 6,
+    "score": 88.66,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 29.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/6-el-cedro-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 2,
+    "score": 90.65,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 20.7,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-el-cedro-costa-rica-2024-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 11,
+    "score": 88.58,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 20.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/11-el-cedro-hacienda-san-isidro-labrador-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos/Los-Santos/Tarrazú. 4 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Don Darío – Hacienda San Isidro Labrador",
+  "type": "farm",
+  "producer": "Matias Monge Leiva",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental, Fermentation",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/3-don-dario-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 3,
+    "score": 90.22,
+    "process": "Experimental",
+    "variety": "Geisha",
+    "price_usd_lb": 50.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-don-dario-costa-rica-2026-experimental/"
+   },
+   {
+    "year": 2025,
+    "rank": 3,
+    "score": 89.59,
+    "process": null,
+    "variety": "Geisha",
+    "price_usd_lb": 25.9,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-hsil-don-dario-costa-rica-2025-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 2,
+    "score": 90.81,
+    "process": "Fermentation",
+    "variety": "Geisha",
+    "price_usd_lb": 25.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-don-dario-hacienda-san-isidro-labrador-costa-rica-2024-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos/Los-Santos/Tarrazú. 3 CoE lot(s) 2024-26. 2025 experimental process not published."
+ },
+ {
+  "name": "David",
+  "type": "farm",
+  "producer": "Jose Jaime Cardenas Rojas",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "San Roque Linea Tipica",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/4-david-costa-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 4,
+    "score": 88.89,
+    "process": "Washed",
+    "variety": "San Roque Linea Tipica",
+    "price_usd_lb": 51.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-david-costa-rica-2026-wet/"
+   }
+  ],
+  "notes": "CoE CR region as published: Valle Occidental. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Fcj Volcan Azul",
+  "type": "farm",
+  "producer": "Alejo Castro Kahle",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Fermentation, Honey",
+  "varieties": "Geisha, SL 28 Linea Borbon, Sl28",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/4-fcj-volcan-azul-costa-rica-2026-dry/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 4,
+    "score": 89.44,
+    "process": "Honey",
+    "variety": "SL 28 Linea Borbon",
+    "price_usd_lb": 35.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-fcj-volcan-azul-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2025,
+    "rank": 8,
+    "score": 87.81,
+    "process": null,
+    "variety": "Sl28",
+    "price_usd_lb": 19.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/8-volcan-azul-costa-rica-2025-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 4,
+    "score": 90.08,
+    "process": "Fermentation",
+    "variety": "Geisha",
+    "price_usd_lb": 35.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-fcj-volcan-azul-costa-rica-2024-experimental/"
+   }
+  ],
+  "notes": "2024 lot listed under Fernando Castro Jimenez."
+ },
+ {
+  "name": "La Isabela",
+  "type": "farm",
+  "producer": "San Cristóbal Del Llano",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/4-la-isabela-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 4,
+    "score": 90.0,
+    "process": "Experimental",
+    "variety": "Geisha",
+    "price_usd_lb": 41.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-la-isabela-costa-rica-2026-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Valle Occidental. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "La Bandera",
+  "type": "farm",
+  "producer": "Diego Hidalgo Umana",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Natural, Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-la-bandera-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 5,
+    "score": 88.89,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 35.9,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-la-bandera-rica-2026-wet/"
+   },
+   {
+    "year": 2025,
+    "rank": 5,
+    "score": 89.47,
+    "process": "Natural",
+    "variety": "Geisha",
+    "price_usd_lb": 37.4,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-la-bandera-costa-rica-2025-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 9,
+    "score": 88.81,
+    "process": "Natural",
+    "variety": "Geisha",
+    "price_usd_lb": 40.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/9-la-bandera-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "2025 lot listed under Luisa Salazar Vargas."
+ },
+ {
+  "name": "Quebrada Grande",
+  "type": "farm",
+  "producer": "María Lourdes Castillo Umaña",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Natural, Washed",
+  "varieties": "SL 28 Linea Borbon, San Roque",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-quebrada-grande-costa-rica-2026-dry/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 5,
+    "score": 89.39,
+    "process": "Honey",
+    "variety": "SL 28 Linea Borbon",
+    "price_usd_lb": 25.8,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-quebrada-grande-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2024,
+    "rank": 3,
+    "score": 90.46,
+    "process": "Washed",
+    "variety": "San Roque",
+    "price_usd_lb": 18.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-quebrada-grande-costa-rica-2024-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 8,
+    "score": 88.96,
+    "process": "Natural",
+    "variety": "San Roque",
+    "price_usd_lb": 23.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/8-quebrada-grande-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "2024 lots listed under Luis Diego / Lizeth Calderón Castillo."
+ },
+ {
+  "name": "La Esmeralda A&M",
+  "type": "farm",
+  "producer": "Ivan Daniel Gutierrez Ureña",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental, Honey",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-la-esmeralda-am-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 5,
+    "score": 89.44,
+    "process": "Experimental",
+    "variety": "Geisha",
+    "price_usd_lb": 32.5,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-la-esmeralda-am-costa-rica-2026-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 4,
+    "score": 91.19,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 77.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-la-esmeralda-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos/Tarrazú. 2 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Santa Teresa",
+  "type": "farm",
+  "producer": "Roger Ureña Hidalgo",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/6-santa-teresa-costa-rica-2026-wet/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 6,
+    "score": 88.83,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 35.6,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/6-santa-teresa-costa-rica-2026-wet/"
+   },
+   {
+    "year": 2025,
+    "rank": 7,
+    "score": 88.63,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 27.7,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/7-santa-teresa-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 1,
+    "score": 92.04,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 84.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-santa-teresa-el-salvador-2024-wet/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos/Los-Santos/Tarrazú. 3 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Finca Voo",
+  "type": "farm",
+  "producer": "Café Solís&Cordero",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Experimental, Fermentation, Natural",
+  "varieties": "Catuai, Catuaí",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/7-finca-voo-costa-rica-2026-experimental/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 7,
+    "score": 89.39,
+    "process": "Experimental",
+    "variety": "Catuai",
+    "price_usd_lb": 37.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/7-finca-voo-costa-rica-2026-experimental/"
+   },
+   {
+    "year": 2025,
+    "rank": 1,
+    "score": 90.47,
+    "process": null,
+    "variety": "Catuaí",
+    "price_usd_lb": 70.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-finca-voo-costa-rica-2025-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 1,
+    "score": 91.19,
+    "process": "Fermentation",
+    "variety": "Catuai",
+    "price_usd_lb": 52.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-finca-voo-costa-rica-2024-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 16,
+    "score": 88.31,
+    "process": "Natural",
+    "variety": "Catuai",
+    "price_usd_lb": 15.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/16-finca-voo-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los Santos/Los-Santos/Tarrazú. 4 CoE lot(s) 2024-26. 2025 experimental process not published."
+ },
+ {
+  "name": "Finca El Centro",
+  "type": "farm",
+  "producer": "Francisco Mena Vilchez",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Natural",
+  "varieties": "Caturra, Caturra Black Moon",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/12-el-centro-costa-rica-2026-dry/",
+  "coe": [
+   {
+    "year": 2026,
+    "rank": 12,
+    "score": 88.44,
+    "process": "Natural",
+    "variety": "Caturra",
+    "price_usd_lb": 24.8,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/12-el-centro-costa-rica-2026-dry/"
+   },
+   {
+    "year": 2025,
+    "rank": 4,
+    "score": 89.5,
+    "process": "Honey",
+    "variety": "Caturra Black Moon",
+    "price_usd_lb": 19.4,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-el-centro-costa-rica-2025-dry/"
+   }
+  ],
+  "notes": "2025 lot listed under Alessia Mena."
+ },
+ {
+  "name": "Vista Paraiso",
+  "type": "farm",
+  "producer": "Jhon Alvarado Abarca",
+  "region": "brunca",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/1-vista-paraiso-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 1,
+    "score": 90.63,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 80.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-vista-paraiso-costa-rica-2025-wet/"
+   }
+  ],
+  "notes": "CoE CR region as published: Perez-Zeledon. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "La Cusuka",
+  "type": "farm",
+  "producer": "Jhonny Alvarado Fonseca",
+  "region": "brunca",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Natural",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/1-la-cusuka-costa-rica-2025-dry/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 1,
+    "score": 91.22,
+    "process": "Natural",
+    "variety": "Geisha",
+    "price_usd_lb": 91.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/1-la-cusuka-costa-rica-2025-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Perez-Zeledon. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Volcan Azul Hacienda Colima",
+  "type": "farm",
+  "producer": "Federico Castro Kahle",
+  "region": "centralvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Otros, Sl28",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-volcan-azul-hacienda-colima-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 2,
+    "score": 90.09,
+    "process": "Washed",
+    "variety": "Sl28",
+    "price_usd_lb": 27.6,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-volcan-azul-hacienda-colima-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 7,
+    "score": 88.31,
+    "process": "Washed",
+    "variety": "Otros",
+    "price_usd_lb": 16.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/7-volcan-azul-hacienda-colima-costa-rica-2024-wet/"
+   }
+  ],
+  "notes": "2024 lot listed under Alejo Castro Kahle."
+ },
+ {
+  "name": "Hsil – Arcoiris",
+  "type": "farm",
+  "producer": "Matias Monge Leiva",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-hsil-arcoiris-costa-rica-2025-dry/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 2,
+    "score": 89.72,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 30.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-hsil-arcoiris-costa-rica-2025-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los-Santos. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "La Corona",
+  "type": "farm",
+  "producer": "Johel Monge Naranjo",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/2-la-corona-costa-rica-2025-experimental/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 2,
+    "score": 89.88,
+    "process": null,
+    "variety": "Geisha",
+    "price_usd_lb": 28.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-la-corona-costa-rica-2025-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los-Santos. 1 CoE lot(s) 2024-26. 2025 experimental process not published."
+ },
+ {
+  "name": "La Torre",
+  "type": "farm",
+  "producer": "Jhon Alvarado Abarca",
+  "region": "brunca",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Black Honey, Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/3-la-torre-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 3,
+    "score": 89.59,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 37.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-la-torre-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 2,
+    "score": 92.0,
+    "process": "Black Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 54.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/2-la-torre-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "Pérez Zeledón farm; distinct from 2025 Valle Occ. La Torre (M. Barrantes)."
+ },
+ {
+  "name": "Kizuna",
+  "type": "farm",
+  "producer": "Luis Enrique Navarro Porras",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Typica",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/4-kizuna-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 4,
+    "score": 88.81,
+    "process": "Washed",
+    "variety": "Typica",
+    "price_usd_lb": 27.6,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-kizuna-costa-rica-2025-wet/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los-Santos. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Don Joel",
+  "type": "farm",
+  "producer": "Allan Oviedo",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Semi-washed",
+  "varieties": "San Roque, San Roque Quenya",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/4-don-joel-costa-rica-2025-experimental/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 4,
+    "score": 88.94,
+    "process": null,
+    "variety": "San Roque Quenya",
+    "price_usd_lb": 19.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-don-joel-costa-rica-2025-experimental/"
+   },
+   {
+    "year": 2024,
+    "rank": 3,
+    "score": 91.42,
+    "process": "Semi-washed",
+    "variety": "San Roque",
+    "price_usd_lb": 18.9,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-don-joel-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Valle Occidental/Valle-Occidental. 2 CoE lot(s) 2024-26. 2025 experimental process not published."
+ },
+ {
+  "name": "Don Joaquin",
+  "type": "farm",
+  "producer": "Victor Hugo Romero Madrigal",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Washed",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-don-joaquin-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 5,
+    "score": 88.78,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 30.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-don-joaquin-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2025,
+    "rank": 9,
+    "score": 87.78,
+    "process": null,
+    "variety": "Geisha",
+    "price_usd_lb": 20.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/9-don-joaquin-costa-rica-2025-experimental/"
+   }
+  ],
+  "notes": "2025 exp. lot listed under Jose Enrique Romero Chacon."
+ },
+ {
+  "name": "El Burio",
+  "type": "farm",
+  "producer": "Luis Alberto Monge Ureña",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": "Kenya",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-el-burio-costa-rica-2025-experimental/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 5,
+    "score": 88.59,
+    "process": null,
+    "variety": "Kenya",
+    "price_usd_lb": 22.0,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-el-burio-costa-rica-2025-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los-Santos. 1 CoE lot(s) 2024-26. 2025 experimental process not published."
+ },
+ {
+  "name": "Hacienda Copey – Itadaki",
+  "type": "farm",
+  "producer": "Daito Giken Costa Rica, S.A.",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey, Washed",
+  "varieties": "Geisha, Gesha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/8-hacienda-copey-itadaki-costa-rica-2025-wet/",
+  "coe": [
+   {
+    "year": 2025,
+    "rank": 8,
+    "score": 87.53,
+    "process": "Washed",
+    "variety": "Gesha",
+    "price_usd_lb": 30.71,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/8-hacienda-copey-itadaki-costa-rica-2025-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 4,
+    "score": 89.5,
+    "process": "Washed",
+    "variety": "Geisha",
+    "price_usd_lb": 40.3,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/4-hacienda-copey-itadaki-costa-rica-2024-wet/"
+   },
+   {
+    "year": 2024,
+    "rank": 10,
+    "score": 88.62,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 36.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/10-hacienda-copey-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Los-Santos/Tarrazú. 3 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Monte Llano Bonito El Kinkajou",
+  "type": "farm",
+  "producer": "Francisco Alejandro Mena Vilchez",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Fermentation",
+  "varieties": "San Roque",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/3-monte-llano-bonito-el-kinkajou-costa-rica-2024-experimental/",
+  "coe": [
+   {
+    "year": 2024,
+    "rank": 3,
+    "score": 90.42,
+    "process": "Fermentation",
+    "variety": "San Roque",
+    "price_usd_lb": 16.2,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/3-monte-llano-bonito-el-kinkajou-costa-rica-2024-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Valle Occidental. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "La Ele",
+  "type": "farm",
+  "producer": "Alberth Monge Segura",
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Honey",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-la-ele-costa-rica-2024-dry/",
+  "coe": [
+   {
+    "year": 2024,
+    "rank": 5,
+    "score": 89.04,
+    "process": "Honey",
+    "variety": "Geisha",
+    "price_usd_lb": 14.9,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-la-ele-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Tarrazú. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "El Bosque Geisha",
+  "type": "farm",
+  "producer": "Alessia Mena Castro",
+  "region": "westvalley",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Fermentation",
+  "varieties": "Geisha",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/5-el-bosque-geisha-costa-rica-2024-experimental/",
+  "coe": [
+   {
+    "year": 2024,
+    "rank": 5,
+    "score": 88.62,
+    "process": "Fermentation",
+    "variety": "Geisha",
+    "price_usd_lb": 20.1,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/5-el-bosque-geisha-costa-rica-2024-experimental/"
+   }
+  ],
+  "notes": "CoE CR region as published: Valle Occidental. 1 CoE lot(s) 2024-26."
+ },
+ {
+  "name": "Aquiares Estate",
+  "type": "farm",
+  "producer": "Diego Alfonso Robelo Gutiérrez",
+  "region": "turrialba",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": "Natural",
+  "varieties": "Centroamericano o H1",
+  "source": "ACE",
+  "source_url": "https://farmdirectory.cupofexcellence.org/listing/nw-aquiares-estate-costa-rica-2024-dry/",
+  "coe": [
+   {
+    "year": 2024,
+    "rank": null,
+    "score": 87.42,
+    "process": "Natural",
+    "variety": "Centroamericano o H1",
+    "price_usd_lb": 8.5,
+    "url": "https://farmdirectory.cupofexcellence.org/listing/nw-aquiares-estate-costa-rica-2024-dry/"
+   }
+  ],
+  "notes": "CoE CR region as published: Turrialba. 1 CoE lot(s) 2024-26. 2024 National Winner lot."
+ },
+ {
+  "name": "CoopeTarrazú R.L.",
+  "type": "coop",
+  "producer": null,
+  "region": "tarrazu",
+  "town": "San Marcos de Tarrazú",
+  "altitude_m": null,
+  "website": "https://coopetarrazu.com/",
+  "processing": null,
+  "varieties": null,
+  "source": "PROCOMER",
+  "source_url": "https://buyfromcostarica.com/en/exporter/coopetarrazu-r-l/",
+  "coe": [],
+  "notes": "Founded 1960 by 228 smallholders; ~4,500 members, mostly <2 ha farms. Processes and exports. Site via esencialcostarica.com."
+ },
+ {
+  "name": "Coopedota R.L.",
+  "type": "coop",
+  "producer": null,
+  "region": "tarrazu",
+  "town": "Santa María de Dota",
+  "altitude_m": null,
+  "website": "https://www.coopedota.com/",
+  "processing": null,
+  "varieties": null,
+  "source": "FAO Mountain Partnership",
+  "source_url": "https://www.fao.org/mountain-partnership/members/detail/coopedota/en",
+  "coe": [],
+  "notes": "Founded 1960; ~800 members, ~50,000 bags green/yr; dries with coffee husks instead of firewood."
+ },
+ {
+  "name": "Cooperativa de Caficultores de Llano Bonito (CoopeLlano Bonito)",
+  "type": "coop",
+  "producer": null,
+  "region": "tarrazu",
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": null,
+  "source": "ACM feature",
+  "source_url": "https://acm.edu/features/feature/223",
+  "coe": [],
+  "notes": "Tarrazú-mountain co-op of small growers (<2 ha); serves 500+ families."
+ },
+ {
+  "name": "Coopeagri R.L.",
+  "type": "coop",
+  "producer": null,
+  "region": "brunca",
+  "town": "San Isidro de Pérez Zeledón",
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": null,
+  "source": "Algrano",
+  "source_url": "https://www.algrano.com/en/seller-profiles/10041-coopeagri-r-l?tab=about",
+  "coe": [],
+  "notes": "Founded 1962; 6,000+ members; Fairtrade; also exports. Main brand Café Don Claudio (Chirripó)."
+ },
+ {
+  "name": "CoopeVictoria R.L.",
+  "type": "coop",
+  "producer": null,
+  "region": null,
+  "town": null,
+  "altitude_m": null,
+  "website": "http://www.coopevictoria.com/",
+  "processing": null,
+  "varieties": null,
+  "source": "Esencial Costa Rica",
+  "source_url": "https://esencialcostarica.com/en/micrositio/coopevictoria",
+  "coe": [],
+  "notes": "Founded 1943, described as CR's first co-op; ~3,000 members; coffee and sugar. Town not on source page."
+ },
+ {
+  "name": "Café Naranjo",
+  "type": "exporter",
+  "producer": null,
+  "region": "westvalley",
+  "town": "Naranjo, Alajuela",
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": null,
+  "source": "PROCOMER",
+  "source_url": "https://buyfromcostarica.com/en/?p=2492",
+  "coe": [],
+  "notes": "Listed as coffee exporter on PROCOMER's Buy From Costa Rica; holds Esencial Costa Rica license."
+ },
+ {
+  "name": "Exclusive Coffees",
+  "type": "exporter",
+  "producer": null,
+  "region": null,
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": null,
+  "source": "Roaster site (Ozone)",
+  "source_url": "https://ozonecoffee.co.uk/pages/coffee-producer-francisco-mena",
+  "coe": [],
+  "notes": "Specialty exporter co-founded 2008 by Francisco Mena & Juan Ramón Alvarado; works with 90+ micro-mills."
+ },
+ {
+  "name": "Finca Sumava de Lourdes",
+  "type": "micro_mill",
+  "producer": "Francisco Mena",
+  "region": "westvalley",
+  "town": "Lourdes de Naranjo",
+  "altitude_m": "1670-1790",
+  "website": null,
+  "processing": "Honey, Natural, experimental fermentations",
+  "varieties": "Villa Sarchí, Pacamara, Mokka, H3, SL28, Geisha, Java, Sidra, Typica",
+  "source": "Roaster site (Ozone)",
+  "source_url": "https://ozonecoffee.co.uk/pages/coffee-producer-francisco-mena",
+  "coe": [],
+  "notes": "Francisco Mena's farm; honey/natural focus plus experimental fermentations; raised-bed and patio drying."
+ },
+ {
+  "name": "Asociación de Cafés Finos de Costa Rica (SCACR)",
+  "type": "association",
+  "producer": null,
+  "region": null,
+  "town": null,
+  "altitude_m": null,
+  "website": null,
+  "processing": null,
+  "varieties": null,
+  "source": "Tico Times",
+  "source_url": "https://ticotimes.net/2026/07/11/costa-rica-coffee-200-pound-cup-of-excellence-2026",
+  "coe": [],
+  "notes": "Runs Costa Rica Cup of Excellence together with the Alliance for Coffee Excellence."
+ }
+]

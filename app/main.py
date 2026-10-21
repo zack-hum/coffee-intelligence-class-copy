@@ -16,6 +16,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from . import config, settings, sources
+from .crm.router import router as crm_router
 from .demo import live as demo
 from .ingest.data import JOBS as DATA_JOBS
 from .ingest.data import run_data
@@ -320,6 +321,8 @@ if settings.DEV_TOOLS:
     from .dev import router as dev_router
     app.include_router(dev_router)
 
+app.include_router(crm_router)
+app.mount("/crm/static", StaticFiles(directory=Path(__file__).parent / "crm" / "static"), name="crm-static")
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
 

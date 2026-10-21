@@ -94,7 +94,8 @@ def test_workflow_routes_every_schedule_to_a_real_endpoint():
     assert len(crons) == 4
     for c in crons:
         assert f'"{c}")' in wf, f"schedule {c} not routed"
-    routes = {r.path for r in app.routes}
+    # Included routers (e.g. the CRM) appear as router objects without a `path`.
+    routes = {getattr(r, "path", None) for r in app.routes}
     for path in re.findall(r'path="([^"?]+)', wf):
         assert path in routes, path
     assert "secrets.APP_URL" in wf and "secrets.INGEST_TOKEN" in wf
