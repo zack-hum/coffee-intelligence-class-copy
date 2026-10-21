@@ -3,6 +3,7 @@
 #
 #   ./dev.sh            demo mode: offline, synthetic data, opens the browser
 #   ./dev.sh live       real data from every free source, local SQLite archive
+#   ./dev.sh crm        the Sourcing CRM on its own (demo mode, port 8081)
 #   ./dev.sh test       run the test suite
 #   ./dev.sh reset      delete the local demo + live archives (data/)
 #   ./dev.sh docker     build and run the production container locally
@@ -66,6 +67,14 @@ serve() {
 
 case "$CMD" in
   demo|live) serve "$CMD" ;;
+  crm)
+    setup
+    CRM_PORT="${CRM_PORT:-8081}"
+    echo; echo "  Coffee Sourcing CRM · standalone demo"; echo "  http://localhost:${CRM_PORT}"; echo "  Ctrl+C to stop."; echo
+    [[ "${NO_BROWSER:-}" == 1 ]] || ( sleep 2; url="http://localhost:${CRM_PORT}/"
+      if command -v open >/dev/null; then open "$url"; elif command -v xdg-open >/dev/null; then xdg-open "$url" >/dev/null 2>&1; fi ) &
+    APP_MODE="${APP_MODE:-demo}" exec .venv/bin/python -m uvicorn app.crm.standalone:app --host 127.0.0.1 \
+      --port "$CRM_PORT" --reload --reload-dir app --log-level warning ;;
   test)
     setup
     APP_MODE=demo GDELT_DELAY=0 .venv/bin/python -m pytest -q tests ;;
@@ -77,5 +86,5 @@ case "$CMD" in
     echo "▸ http://localhost:${PORT} (demo mode inside the production container)"
     docker run --rm -p "${PORT}:8080" -e APP_MODE=demo coffee-monitor ;;
   *)
-    sed -n '2,12p' "$0"; exit 1 ;;
+    sed -n '2,13p' "$0"; exit 1 ;;
 esac

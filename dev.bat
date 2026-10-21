@@ -2,6 +2,7 @@
 REM Coffee Origin Monitor - local launcher (Windows)
 REM   dev.bat          demo mode: offline, synthetic data
 REM   dev.bat live     real data from every free source, local archive
+REM   dev.bat crm      the Sourcing CRM on its own (demo mode, port 8081)
 REM   dev.bat test     run the tests
 REM   dev.bat reset    delete local archives (data\)
 setlocal
@@ -61,8 +62,20 @@ if /i "%MODE%"=="test" (
   exit /b
 )
 
+if "%CRM_PORT%"=="" set "CRM_PORT=8081"
+if /i "%MODE%"=="crm" if "%APP_MODE%"=="" set "APP_MODE=demo"
+if /i "%MODE%"=="crm" (
+  echo.
+  echo   Coffee Sourcing CRM - standalone demo
+  echo   http://localhost:%CRM_PORT%
+  echo   Press Ctrl+C to stop.
+  echo.
+  .venv\Scripts\python -m uvicorn app.crm.standalone:app --host 127.0.0.1 --port %CRM_PORT% --reload --reload-dir app --log-level warning
+  exit /b
+)
+
 if /i not "%MODE%"=="demo" if /i not "%MODE%"=="live" (
-  echo Usage: dev.bat [demo ^| live ^| test ^| reset]
+  echo Usage: dev.bat [demo ^| live ^| crm ^| test ^| reset]
   exit /b 1
 )
 
