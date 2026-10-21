@@ -4,25 +4,28 @@ Priority order for ideas. An item here is **not** approved work: the agent turns
 `proposal` issues, and only issues Z labels `approved` get built (see `docs/DEVELOPMENT.md`).
 Z can reorder, delete or add items in a PR or by commenting on any issue.
 
-## Now (top = next)
+## Now (top = next) — build order Z approved on #14 (2026-10-19)
 
-Z's core jobs (2026-10-15): find & vet suppliers · log visits & cuppings · price & negotiate ·
-market research · data tracking · CRM. Trip Jan 4–17, 2027; phone + laptop; scout + broker.
+- [ ] #13 Card-free hosting (Render + Firestore Spark + Actions cron) — PR #18, awaiting review.
+- [ ] #8 Sourcing CRM v1 — draft PR #17, awaiting review.
+- [ ] #10 Field mode — both slices in PR #19 (stacked on #17), ready for review; real-iPhone check needs Z.
+- [ ] #21 Harvest phase by region (early/peak/tail) + Z's Field observations — proposed 2026-10-21, size S,
+      recommended before #9 (`agent/research/2026-10-21-costa-rica-harvest-during-trip.md`).
+- [ ] #9 Offer check — re-scoped: SCTG has no reuse license (`agent/research/2026-10-20-sctg-licensing.md`);
+      waiting on Z's re-approval of the revised scope.
+- [ ] #11 STRATEGY.md first draft (docs only).
 
-- [ ] Sourcing CRM: producers, mills, exporters, buyers, contacts, interactions, follow-ups, samples.
-- [ ] Field mode: mobile-friendly visit & cupping log (SCA-style scores, notes, photos) that works offline and syncs.
-- [ ] Free hosting before the trip so Z can reach it from his phone in Costa Rica (with auth).
-- [ ] Segment research: what roasters (solo → enterprise), importers/exporters and cafes need and do in sourcing operations; where workflows overlap.
-- [ ] Propose a first draft of `docs/STRATEGY.md`: shared sourcing core + segment layers (Z reviews and approves).
+## Next
+
+- [ ] #20 Global supplier catalogue (CoE results + Open Supply Hub CC BY-SA + Trase if licensed) — proposed,
+      build after the trip (`agent/research/2026-10-20-global-producer-catalog-sources.md`).
 - [ ] Costa Rica trip mode: turn the trip planner into a practical field guide — per-region
       farm/mill/cooperative visit list, harvest status during trip dates, what to ask producers,
-      price-check calculator presets (USD/lb FOB ↔ ₡/fanega ↔ ₡/kg). Trip: Jan 4–17, 2027 (sourcing mission).
+      price-check calculator presets (USD/lb FOB ↔ ₡/fanega ↔ ₡/kg). Trip: Jan 4–17, 2027.
 - [ ] Competitor & adjacent-software landscape: first full pass into `agent/COMPETITORS.md`.
 - [ ] Source health: audit every feed in `app/config.py`, replace dead ones with working free alternatives.
 - [ ] Differentials: add a reference table of typical specialty differentials by origin/grade
       (sourced, dated), and use it as defaults in the implied-local-price tool.
-
-## Next
 
 - [ ] Weekly market brief page: auto-generated summary of price moves, CFTC positioning,
       weather anomalies and top-tagged news per origin (rule-based, no LLM).
