@@ -92,7 +92,8 @@ app/
   demo/            Offline fixtures and the demo headline generator
   static/          Single-page frontend (vanilla JS, no build step)
 tests/             Offline tests (pytest)
-deploy.sh          One-command Google Cloud deployment
+infra/             Terraform for Azure App Service; environments/ holds dev and prod .tfvars
+webapp/            Node.js page deployed to the App Service web app
 ```
 
 The server reloads when you save a file under `app/`; refresh the browser to see the change. The Dev page has on-demand ingestion, a tagging playground that shows which keywords fired for any headline, and a feed tester for previewing an RSS feed before adding it to `app/config.py`.
@@ -124,23 +125,34 @@ The server reloads when you save a file under `app/`; refresh the browser to see
 
 Each story is checked for coffee relevance, then tagged with origins and Costa Rica regions (using local-language place names), one or more of 13 topics, and a **bullish/bearish signal** from supply and price keywords such as frost, drought, bumper crop and plunge. The signal is a heuristic for triage only. All keyword lists are in `app/tagging.py`.
 
-## Deploy to Google Cloud
+## Deploy to Azure (Terraform)
 
-Requirements: a Google Cloud project with billing enabled, and the `gcloud` CLI signed in.
+Infrastructure lives in `infra/` as Terraform: one resource group per environment with a Linux App Service plan (dev: free F1; prod: B1, billed hourly, so destroy it when done) and a Node 20 web app whose `ENVIRONMENT` setting is the environment name. `webapp/` is a small Node.js page deployed to it that shows that setting, so dev and prod are easy to tell apart.
 
-```bash
-PROJECT_ID=your-project DASH_PASSWORD='choose-a-password' \
-  CENSUS_API_KEY=... FAS_API_KEY=... ./deploy.sh
+Requirements: Terraform 1.6+ and the Azure CLI signed in (`az login`).
+
+```powershell
+cd infra
+terraform init
+terraform workspace new dev        # or: terraform workspace select dev
+terraform plan -var-file="environments/dev.tfvars" -out="dev.tfplan"
+terraform apply "dev.tfplan"
 ```
 
-The script is safe to re-run. It:
-1. enables the APIs and creates Firestore with its indexes;
-2. stores the password and a generated ingestion token in Secret Manager;
-3. deploys Cloud Run;
-4. schedules ingestion with Cloud Scheduler: news every 15 minutes, datasets daily, prices and weather every 3 hours;
-5. starts the first run.
+Keep the workspace and the `.tfvars` file matched (`dev` with `dev.tfvars`, `prod` with `prod.tfvars`). Every resource name ends in the environment name.
 
-For personal use it is expected to stay in or near the free tiers. Cloud Run scales to zero, and Firestore reads are kept low by deduplicating against one list of recent IDs and caching news stats. If you go over, change the news schedule to `*/30` in `deploy.sh`.
+Deploy the code (zip the *contents* of `webapp/`, not the folder):
+
+```powershell
+Compress-Archive -Path webapp\* -DestinationPath webapp.zip -Force
+cd infra
+terraform workspace show   # must say dev
+az webapp deploy --resource-group "$(terraform output -raw resource_group_name)" --name "$(terraform output -raw web_app_name)" --src-path ..\webapp.zip --type zip
+```
+
+Then open `terraform output web_app_url`. F1 is free but limited to 60 CPU minutes a day and sleeps when idle, so the first request can take a few seconds.
+
+**Tear down:** `terraform destroy -var-file="environments/dev.tfvars"`.
 
 ## Known limitations
 

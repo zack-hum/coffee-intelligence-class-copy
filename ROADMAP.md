@@ -35,7 +35,7 @@ Z can reorder, delete or add items in a PR or by commenting on any issue.
 
 ## Later
 
-- [ ] Cloud deployment hardening for GCP (only when Z asks to go live).
+- [ ] Cloud deployment hardening for Azure (persistent archive storage, only when Z asks to go live).
 - [ ] Personas: views tailored for roasters, green buyers, importers, cafes.
 
 ## Done

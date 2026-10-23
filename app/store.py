@@ -222,7 +222,7 @@ class FirestoreStore(Store):
 
     Firestore can only use one array-contains filter per query, so the most
     selective filter goes to Firestore and the rest are applied in Python.
-    deploy.sh creates the composite indexes these queries need."""
+    They need composite indexes (array-contains + published desc) on articles."""
 
     SEEN_MAX = 8000  # ~160 KB of IDs, well under the 1 MiB document limit
 

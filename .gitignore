@@ -30,3 +30,15 @@ htmlcov/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Terraform (infra/): providers, state and saved plans stay local.
+# .terraform.lock.hcl is committed so everyone gets the same provider versions.
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate.d/
+*.tfplan
+crash.log
+
+# Deploy packages (webapp.zip)
+*.zip

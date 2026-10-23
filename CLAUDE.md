@@ -88,8 +88,8 @@ considered — Z decides.
 - Tagging is keyword/rule-based (`app/tagging.py`); no AI/LLM layer in the app.
 - ~18 specialty origins, full searchable news archive.
 - Costa Rica gets a dedicated, deep page.
-- Local demo first (`./dev.sh`), GCP Cloud Run later (`deploy.sh`). Demo mode must keep
-  working fully offline.
+- Local demo first (`./dev.sh`); cloud is Azure App Service via Terraform in `infra/`
+  (`webapp/` is the Node page deployed there). Demo mode must keep working fully offline.
 
 ## Human in the loop — the hard rules
 
