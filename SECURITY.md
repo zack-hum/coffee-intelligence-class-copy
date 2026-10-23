@@ -14,7 +14,7 @@ Report them privately through GitHub: open the repository's **Security** tab and
 
 If you run your own instance:
 
-- **Set `DASH_PASSWORD`** for any instance reachable from the internet. Without it, the dashboard and API are open to anyone. `deploy.sh` requires it and stores it in Secret Manager.
+- **Set `DASH_PASSWORD`** for any instance reachable from the internet. Without it, the dashboard and API are open to anyone.
 - **Keep `DEV_TOOLS` off in public deployments.** The Dev page can reset the archive and trigger ingestion. It is off by default on Cloud Run.
 - **Never commit `.env`.** It holds your API keys and is excluded by `.gitignore`. If a key is ever committed, revoke it with the provider and issue a new one; deleting the file from Git history is not enough.
-- **The ingestion endpoints** (`/tasks/*`) require the `X-Ingest-Token` header, which `deploy.sh` generates and stores in Secret Manager.
+- **The ingestion endpoints** (`/tasks/*`) require the `X-Ingest-Token` header, and are disabled when `INGEST_TOKEN` is unset.

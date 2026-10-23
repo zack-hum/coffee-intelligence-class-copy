@@ -4,8 +4,8 @@ WORKDIR /srv
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
-# Run as an unprivileged user
-RUN useradd --create-home --uid 10001 app
+# Run as an unprivileged user; it owns data/ for the SQLite archive (demo/live modes)
+RUN useradd --create-home --uid 10001 app && mkdir -p data && chown app data
 USER app
-# Cloud Run injects $PORT (8080 by default)
+# Listens on $PORT, 8080 by default
 CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --proxy-headers

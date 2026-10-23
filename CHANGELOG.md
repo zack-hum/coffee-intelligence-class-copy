@@ -8,6 +8,13 @@ All notable changes to this project are documented here. The format follows [Kee
 - Development process (`docs/DEVELOPMENT.md`): proposal → approval → pull request flow, versioning and rollback guide.
 - Agent operating files: `CLAUDE.md`, `ROADMAP.md`, `agent/` (research notes, competitor tracker, run log).
 - Sourcing CRM (#8): a Sourcing tab with organizations, people, a green-coffee deal pipeline (drag and drop between stages, won/lost), activities with a due-soon/overdue list, notes and samples, CSV export/import for every list, and an optional seed list of ~40 public Costa Rican suppliers. Also runs standalone with `./dev.sh crm` / `dev.bat crm`.
+- Terraform deployment to Azure App Service (`infra/`, `dev` on the free F1 plan, `prod` on paid B1) and a Node.js page (`webapp/`) deployed to it with `az webapp deploy`.
+
+### Changed
+- The Docker image creates `data/` owned by the app user, so demo and live modes can write their SQLite archive in a container.
+
+### Removed
+- `deploy.sh` (Google Cloud Run + Firestore + Cloud Scheduler); replaced by `infra/`.
 
 ## [1.1.0] - 2026-10-12
 
