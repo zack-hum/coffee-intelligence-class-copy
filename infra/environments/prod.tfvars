@@ -1,3 +1,6 @@
-environment = "prod"
-location    = "francecentral"
-sku_name    = "B1" # paid: billed hourly against credit; destroy or set back to F1 when done
+environment        = "prod"
+location           = "francecentral" # a region the Azure for Students subscription allows
+app_service_sku    = "B1"            # paid: billed hourly against credit; destroy when done
+log_retention_days = 30
+enable_sql         = false
+enable_postgres    = false

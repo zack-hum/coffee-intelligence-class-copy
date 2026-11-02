@@ -127,19 +127,20 @@ Each story is checked for coffee relevance, then tagged with origins and Costa R
 
 ## Deploy to Azure (Terraform)
 
-Infrastructure lives in `infra/` as Terraform: one resource group per environment with a Linux App Service plan (dev: free F1; prod: B1, billed hourly, so destroy it when done) and a Node 20 web app whose `ENVIRONMENT` setting is the environment name. `webapp/` is a small Node.js page deployed to it that shows that setting, so dev and prod are easy to tell apart.
+Infrastructure lives in `infra/` as Terraform. Each environment gets its own resource group holding a Linux App Service plan (dev: free F1; prod: B1, billed hourly, so destroy it when done), a Node 22 web app whose `ENVIRONMENT` setting is the environment name, Application Insights backed by a Log Analytics workspace, and a storage account. An Azure SQL or PostgreSQL database can be added with `enable_sql = true` or `enable_postgres = true` in the `.tfvars` file; both are off by default and cost money while they exist. The web app, storage account and database names end in a random 5-character suffix, because those names must be unique across all of Azure. `webapp/` is a small Node.js page deployed to the web app that shows the `ENVIRONMENT` setting, so dev and prod are easy to tell apart.
 
-Requirements: Terraform 1.6+ and the Azure CLI signed in (`az login`).
+Requirements: Terraform 1.6+, the Azure CLI signed in (`az login`), and your subscription ID in `ARM_SUBSCRIPTION_ID`.
 
 ```powershell
 cd infra
+$env:ARM_SUBSCRIPTION_ID = az account show --query id -o tsv
 terraform init
 terraform workspace new dev        # or: terraform workspace select dev
 terraform plan -var-file="environments/dev.tfvars" -out="dev.tfplan"
 terraform apply "dev.tfplan"
 ```
 
-Keep the workspace and the `.tfvars` file matched (`dev` with `dev.tfvars`, `prod` with `prod.tfvars`). Every resource name ends in the environment name.
+Keep the workspace and the `.tfvars` file matched (`dev` with `dev.tfvars`, `prod` with `prod.tfvars`). The plan stops with an error if they don't match. Every resource name includes the environment name.
 
 Deploy the code (zip the *contents* of `webapp/`, not the folder):
 
