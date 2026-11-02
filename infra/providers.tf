@@ -19,7 +19,14 @@ terraform {
 # The subscription ID is NOT written here. Terraform reads it from the
 # ARM_SUBSCRIPTION_ID environment variable, so no IDs end up in Git.
 provider "azurerm" {
-  features {}
+  features {
+    # Application Insights auto-creates a "Smart Detection" action group that
+    # Terraform doesn't manage. Without this, `terraform destroy` fails because
+    # the resource group still contains it.
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
 
   # Register only what this stack uses. The first apply in a new subscription waits
   # for these registrations, which is why it is slow.
