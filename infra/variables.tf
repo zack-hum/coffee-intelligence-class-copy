@@ -1,45 +1,49 @@
+variable "project" {
+  description = "Short project name used in every resource name. Lowercase letters and numbers only."
+  type        = string
+  default     = "coffeeint"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]{3,10}$", var.project))
+    error_message = "project must be 3-10 lowercase letters or numbers (it becomes part of the storage account name)."
+  }
+}
+
 variable "environment" {
-  description = "Environment name, appended to every resource name (dev, prod)."
+  description = "Environment name. Must match the current workspace (dev or prod)."
   type        = string
 
   validation {
     condition     = contains(["dev", "prod"], var.environment)
-    error_message = "environment must be dev or prod."
+    error_message = "environment must be \"dev\" or \"prod\"."
   }
-}
-
-variable "project" {
-  description = "Short project name used in resource names."
-  type        = string
-  default     = "coffee-intel"
 }
 
 variable "location" {
   description = "Azure region. Azure for Students only allows a few regions (see `az policy assignment list`)."
   type        = string
-  default     = "francecentral"
 }
 
-variable "subscription_id" {
-  description = "Azure subscription ID. Leave null to use ARM_SUBSCRIPTION_ID or the Azure CLI default."
-  type        = string
-  default     = null
-}
-
-variable "sku_name" {
-  description = "App Service plan size. F1 is free; B1 and up are paid."
+variable "app_service_sku" {
+  description = "App Service plan size. F1 is free; B1 is the smallest paid tier."
   type        = string
   default     = "F1"
 }
 
-variable "node_version" {
-  description = "Node.js runtime for the web app."
-  type        = string
-  default     = "20-lts"
+variable "log_retention_days" {
+  description = "How long Log Analytics keeps data."
+  type        = number
+  default     = 30
 }
 
-variable "tags" {
-  description = "Extra tags for every resource."
-  type        = map(string)
-  default     = {}
+variable "enable_sql" {
+  description = "Create an Azure SQL server and database."
+  type        = bool
+  default     = false
+}
+
+variable "enable_postgres" {
+  description = "Create an Azure Database for PostgreSQL flexible server."
+  type        = bool
+  default     = false
 }
