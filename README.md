@@ -92,8 +92,9 @@ app/
   demo/            Offline fixtures and the demo headline generator
   static/          Single-page frontend (vanilla JS, no build step)
 tests/             Offline tests (pytest)
-infra/             Terraform for Azure App Service; environments/ holds dev and prod .tfvars
-webapp/            Node.js page deployed to the App Service web app
+infra/             Terraform, one folder per cloud: azure/ (App Service), gcp/ (Cloud Run),
+                   aws/ (Elastic Beanstalk + CloudFront); each has environments/ with dev and prod .tfvars
+webapp/            Node.js page deployed to the web app on each cloud
 ```
 
 The server reloads when you save a file under `app/`; refresh the browser to see the change. The Dev page has on-demand ingestion, a tagging playground that shows which keywords fired for any headline, and a feed tester for previewing an RSS feed before adding it to `app/config.py`.
@@ -125,14 +126,28 @@ The server reloads when you save a file under `app/`; refresh the browser to see
 
 Each story is checked for coffee relevance, then tagged with origins and Costa Rica regions (using local-language place names), one or more of 13 topics, and a **bullish/bearish signal** from supply and price keywords such as frost, drought, bumper crop and plunge. The signal is a heuristic for triage only. All keyword lists are in `app/tagging.py`.
 
-## Deploy to Azure (Terraform)
+## Deploy to the cloud (Terraform)
 
-Infrastructure lives in `infra/` as Terraform. Each environment gets its own resource group holding a Linux App Service plan (dev: free F1; prod: B1, billed hourly, so destroy it when done), a Node 22 web app whose `ENVIRONMENT` setting is the environment name, Application Insights backed by a Log Analytics workspace, and a storage account. An Azure SQL or PostgreSQL database can be added with `enable_sql = true` or `enable_postgres = true` in the `.tfvars` file; both are off by default and cost money while they exist. The web app, storage account and database names end in a random 5-character suffix, because those names must be unique across all of Azure. `webapp/` is a small Node.js page deployed to the web app that shows the `ENVIRONMENT` setting, so dev and prod are easy to tell apart.
+The same `webapp/` page can be hosted on Azure, Google Cloud or AWS. Each cloud has its own Terraform folder under `infra/` with its own state, so they can be deployed, used and destroyed independently. All three follow the same pattern: `dev` and `prod` workspaces matched to `environments/*.tfvars` (the plan stops if they don't match), a random 5-character suffix on globally unique names, a storage bucket, monitoring, and optional SQL Server and PostgreSQL databases that are off by default and cost money while they exist. Database connection strings use the same environment variable names on every cloud (`POSTGRESQLCONNSTR_PostgresDb`, `SQLAZURECONNSTR_SqlDb`), so app code reading them works unchanged.
+
+| Azure | Google Cloud | AWS |
+|---|---|---|
+| Resource group | The project, plus labels | Tags |
+| App Service plan + web app (F1 / B1) | Cloud Run service (min instances 0 / 1) | Elastic Beanstalk single-instance environment (t3.micro / t3.small) |
+| `https_only` | Built in | CloudFront in front of Beanstalk |
+| Application Insights + Log Analytics | Dedicated Cloud Logging bucket | CloudWatch Logs + Beanstalk enhanced health |
+| Storage account | Cloud Storage bucket | S3 bucket |
+| Azure SQL / PostgreSQL flexible server | Cloud SQL for SQL Server Express / PostgreSQL | RDS for SQL Server Express / PostgreSQL |
+| `az webapp deploy` (zip) | Cloud Build makes an image, `gcloud run deploy` | Zip to S3, `aws elasticbeanstalk update-environment` |
+
+### Azure (`infra/azure`)
+
+Each environment gets its own resource group holding a Linux App Service plan (dev: free F1; prod: B1, billed hourly, so destroy it when done), a Node 22 web app whose `ENVIRONMENT` setting is the environment name, Application Insights backed by a Log Analytics workspace, and a storage account. An Azure SQL or PostgreSQL database can be added with `enable_sql = true` or `enable_postgres = true` in the `.tfvars` file; both are off by default and cost money while they exist. The web app, storage account and database names end in a random 5-character suffix, because those names must be unique across all of Azure. `webapp/` is a small Node.js page deployed to the web app that shows the `ENVIRONMENT` setting, so dev and prod are easy to tell apart.
 
 Requirements: Terraform 1.6+, the Azure CLI signed in (`az login`), and your subscription ID in `ARM_SUBSCRIPTION_ID`.
 
 ```powershell
-cd infra
+cd infra\azure
 $env:ARM_SUBSCRIPTION_ID = az account show --query id -o tsv
 terraform init
 terraform workspace new dev        # or: terraform workspace select dev
@@ -146,14 +161,83 @@ Deploy the code (zip the *contents* of `webapp/`, not the folder):
 
 ```powershell
 Compress-Archive -Path webapp\* -DestinationPath webapp.zip -Force
-cd infra
+cd infra\azure
 terraform workspace show   # must say dev
-az webapp deploy --resource-group "$(terraform output -raw resource_group_name)" --name "$(terraform output -raw web_app_name)" --src-path ..\webapp.zip --type zip
+az webapp deploy --resource-group "$(terraform output -raw resource_group_name)" --name "$(terraform output -raw web_app_name)" --src-path ..\..\webapp.zip --type zip
 ```
 
 Then open `terraform output web_app_url`. F1 is free but limited to 60 CPU minutes a day and sleeps when idle, so the first request can take a few seconds.
 
 **Tear down:** `terraform destroy -var-file="environments/dev.tfvars"`.
+
+> **Moved from `infra/` to `infra/azure/`.** If you already deployed from the old folder, move your local state before running anything: `Move-Item infra\terraform.tfstate.d infra\azure\`, delete `infra\.terraform`, then `cd infra\azure` and `terraform init`. `terraform plan` should then show no changes.
+
+### Google Cloud (`infra/gcp`)
+
+Each environment gets a Cloud Run service (dev scales to zero, which stays in the free tier but makes the first request after idle slow; prod keeps one instance warm and is billed while it exists), an Artifact Registry repository for the webapp image (keeps the 3 newest), a Cloud Storage bucket, a log bucket with the chosen retention, and two service accounts: one the app runs as and one Cloud Build uses. Terraform switches on the APIs it needs, so the first apply in a new project is slow. The service starts with Google's sample "hello" image until you deploy the webapp.
+
+Requirements: Terraform 1.6+, the gcloud CLI signed in (`gcloud auth login` and `gcloud auth application-default login`), a project with billing linked, and the project ID in `GOOGLE_PROJECT`.
+
+```powershell
+cd infra\gcp
+$env:GOOGLE_PROJECT = "your-project-id"
+terraform init
+terraform workspace new dev        # or: terraform workspace select dev
+terraform plan -var-file="environments/dev.tfvars" -out="dev.tfplan"
+terraform apply "dev.tfplan"
+```
+
+Deploy the code. Cloud Build turns `webapp/` into an image with buildpacks (no Dockerfile needed), then Cloud Run switches to it:
+
+```powershell
+cd infra\gcp
+terraform workspace show   # must say dev
+$project = terraform output -raw project_id
+$region  = terraform output -raw region
+$image   = terraform output -raw image
+$bucket  = terraform output -raw storage_bucket_name
+$builder = terraform output -raw build_service_account
+gcloud builds submit ..\..\webapp --project $project --region $region --pack "image=$image" --service-account "projects/$project/serviceAccounts/$builder" --gcs-source-staging-dir "gs://$bucket/source" --gcs-log-dir "gs://$bucket/build-logs"
+gcloud run deploy (terraform output -raw service_name) --project $project --region $region --container app --image $image
+```
+
+Then open `terraform output web_app_url`.
+
+**Tear down:** `terraform destroy -var-file="environments/dev.tfvars"`. The APIs stay switched on (they cost nothing). If the project's organization blocks public services, the `allUsers` invoker binding fails on apply; ask the org admin or use a personal project.
+
+### AWS (`infra/aws`)
+
+Each environment gets an Elastic Beanstalk application and a single-instance Node.js 22 environment (no load balancer; dev on free-tier-eligible t3.micro, prod on t3.small, billed hourly), a CloudFront distribution that adds HTTPS on a `*.cloudfront.net` address, app logs streamed to CloudWatch with the chosen retention, an S3 bucket, and the IAM roles Beanstalk needs. It uses the account's default VPC. The environment starts with Beanstalk's sample app until you deploy the webapp. AWS App Runner, the closer match to App Service, stopped accepting new customers in April 2026, so it isn't used.
+
+Requirements: Terraform 1.6+, the AWS CLI signed in (`aws configure`, or `aws sso login` with `AWS_PROFILE` set).
+
+```powershell
+cd infra\aws
+terraform init
+terraform workspace new dev        # or: terraform workspace select dev
+terraform plan -var-file="environments/dev.tfvars" -out="dev.tfplan"
+terraform apply "dev.tfplan"
+```
+
+The first apply takes 10 to 15 minutes, mostly the Beanstalk environment and CloudFront.
+
+Deploy the code (the same `webapp.zip` as Azure: zip the *contents* of `webapp/`):
+
+```powershell
+Compress-Archive -Path webapp\* -DestinationPath webapp.zip -Force
+cd infra\aws
+terraform workspace show   # must say dev
+$label  = Get-Date -Format "yyyyMMdd-HHmmss"
+$bucket = terraform output -raw storage_bucket_name
+$region = terraform output -raw region
+aws s3 cp ..\..\webapp.zip "s3://$bucket/deploy/webapp-$label.zip" --region $region
+aws elasticbeanstalk create-application-version --region $region --application-name (terraform output -raw application_name) --version-label $label --source-bundle "S3Bucket=$bucket,S3Key=deploy/webapp-$label.zip"
+aws elasticbeanstalk update-environment --region $region --environment-name (terraform output -raw environment_name) --version-label $label
+```
+
+Then open `terraform output web_app_url` (allow a minute or two for the update).
+
+**Tear down:** `terraform destroy -var-file="environments/dev.tfvars"`. Removing the CloudFront distribution takes several minutes; that is normal. RDS for SQL Server can't create a database at launch, so with `enable_sql = true` the connection string points at `master`; create your own database there.
 
 ## Known limitations
 
